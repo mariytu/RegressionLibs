@@ -7,14 +7,14 @@
 findMissingValues(dataSet)
 }
 \arguments{
-\item{dataSet}{an object of class Data.Frame with a dataset.}
+\item{dataSet}{an object of class data frame with a data set.}
 }
 \value{
-an integer(0) when no null values, or a Data.Frame with all null values
+an integer(0) when no null values, or a data frame with all null values
 identified by their positions (i,j)
 }
 \description{
-Check out all dataset to find missing values. Return a data frame, with the
+Check out all data set to find missing values. Return a data frame, with the
 possition of each missing value.
 }
 \examples{

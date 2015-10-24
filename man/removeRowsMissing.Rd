@@ -7,13 +7,13 @@
 removeRowsMissing(missingValues, dataSet)
 }
 \arguments{
-\item{missingValues}{an object of class Data.Frame with the possition (i,j) of
+\item{missingValues}{an object of class data frame with the possition (i,j) of
 each missing value.}
 
-\item{dataSet}{an object of class Data.Frame with the original Data Set.}
+\item{dataSet}{an object of class data frame with the original data set.}
 }
 \value{
-an object of class Data.Frame with a modified Data Set without missing
+an object of class data frame with a modified data set without missing
 values.
 }
 \description{

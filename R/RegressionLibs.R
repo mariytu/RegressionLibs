@@ -66,11 +66,11 @@ diagnosticData <- function(fit) {
 
 #' Find Missing Values
 #'
-#' Check out all dataset to find missing values. Return a data frame, with the 
+#' Check out all data set to find missing values. Return a data frame, with the 
 #' possition of each missing value.
 #' 
-#' @param dataSet an object of class Data.Frame with a dataset.
-#' @return an integer(0) when no null values, or a Data.Frame with all null values
+#' @param dataSet an object of class data frame with a data set.
+#' @return an integer(0) when no null values, or a data frame with all null values
 #' identified by their positions (i,j)
 #' @seealso removeRowsMissing
 #' @examples
@@ -112,10 +112,10 @@ findMissingValues <- function (dataSet) {
 #'
 #' Delete all rows of data set that contains a missing value.
 #' 
-#' @param missingValues an object of class Data.Frame with the possition (i,j) of 
+#' @param missingValues an object of class data frame with the possition (i,j) of 
 #' each missing value.
-#' @param dataSet an object of class Data.Frame with the original Data Set.
-#' @return an object of class Data.Frame with a modified Data Set without missing 
+#' @param dataSet an object of class data frame with the original data set.
+#' @return an object of class data frame with a modified data set without missing 
 #' values.
 #' @seealso findMissingValues
 #' @examples
@@ -129,7 +129,6 @@ removeRowsMissing <- function (missingValues, dataSet) {
   if (missing(missingValues)) {
     stop("Need to specify missingValues!")
   }
-  
   if (missing(dataSet)) {
     stop("Need to specify dataSet")
   }
@@ -139,5 +138,121 @@ removeRowsMissing <- function (missingValues, dataSet) {
     dataSet <- dataSet[-missingValues[i,1],] #Remove row
   }
   
+  return (dataSet)
+}
+
+#' Normalize Function
+#'
+#' Function to normalize data set in range of 0 to 1.
+#' 
+#' @param dataSet an object of class data frame with the original data set.
+#' @return an object of class data frame with a modified data set normalized 
+#' in range of 0 to 1.
+#' @seealso scaleData, normalizeData
+#' @examples
+#' iris.x <- iris[,1:4]
+#' normedIris <- as.data.frame(lapply(iris.x, normalize)) #In range [0,1]
+normalize <- function(dataSet){
+  
+  if (missing(dataSet)) {
+    stop("Need to specify dataSet!")
+  }
+  
+  #All parameters are OK!
+  (dataSet - min(dataSet, na.rm=TRUE))/(max(dataSet,na.rm=TRUE) - min(dataSet, na.rm=TRUE))
+}
+
+#' Scale Function
+#'
+#' Function to scale the data set. If you use normalize function first and then 
+#' scaleData function you could obtain a normalize dataset in a range [x,y]
+#' 
+#' @param dataSet an object of class data frame with the original data set.
+#' @param min an integer with the min value that you want scale the data set.
+#' @param max an integer with the max value that you want scale the data set.
+#' @return an object of class data frame with a modified data set scaled 
+#' in the defined range.
+#' @seealso normalize, normalizeData
+#' @examples
+#' iris.x <- iris[,1:4]
+#' normed <- as.data.frame(lapply(iris.x, normalize))
+#' normedIris <- as.data.frame(lapply(normed, 1, 10, scaleData)) #In range [1,10]
+scaleData <- function(dataSet, min, max){
+  
+  if (missing(dataSet)) {
+    stop("Need to specify dataSet!")
+  }
+  if (missing(min)) {
+    stop("Need to specify min!")
+  }
+  if (missing(max)) {
+    stop("Need to specify max!")
+  }
+  if (min >= max) {
+    stop("Min must be less strict than max!")
+  }
+  
+  #All parameters are OK!
+  (dataSet * (max - min)) + min
+}
+
+#' Normalize Data Set
+#'
+#' Function to normalize a data set. You could normalize in any range [min,max], but
+#' if you don't specify this values, this function make a normalization in range
+#' [0,1].
+#' 
+#' @param dataSet an object of class data frame with the original data set that you 
+#' want normalize.
+#' @param min an integer with the min value that you want normalize the data set.
+#' @param max an integer with the max value that you want normalize the data set.
+#' @return an object of class data frame with a modified data set normalized 
+#' in the defined range.
+#' @seealso normalize, scaleData
+#' @examples
+#' iris.x <- iris[,1:4]
+#' normedIris <- normalizeData(iris) #In range [0,1]
+#' normedIris <- normalizeData(iris, 1, 10) #In ragen [1,10]
+normalizeData<- function(dataSet, min, max){
+  
+  if (missing(dataSet)) {
+    stop("Need to specify dataSet!")
+  }
+  
+  #All parameters are OK!
+  try(
+    if (!missing("x")) {
+      try(
+        if (!missing("y")) {
+          normed <- as.data.frame(lapply(dataSet, normalize))
+          as.data.frame(lapply(normed, min, max, scaleData))
+        }, silent = TRUE)
+    }, silent = TRUE)
+  
+  as.data.frame(lapply(dataSet, normalize))
+}
+
+#' Calculate Variance Function
+#'
+#' Function to calculate de variance of an specific column.
+#' 
+#' @param dataSet an object of class data frame with a data set that you want 
+#' calculate the variance.
+#' @param col an integer that represent the column that you want calculate the
+#' variance.
+#' @return an object of class data frame with a modified data set with variance
+#' calculated.
+#' @seealso linePlot
+#' @examples
+#' iris.x <- iris[,1:4]
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' rowsData <- length(ir.pca$sdev)
+#' seqRow <- seq(from = 1, to = rowsData, length.out = rowsData)
+#' dataPlot <- data.frame(seqRow, ir.pca$sdev)
+#' dataPlot <- CalculateVariance(dataPlot, 2)
+CalculateVariance <- function(dataSet, col) {
+  for (i in 1:nrow(dataSet)) {
+    dataSet[i,col] <- dataSet[i,col]*dataSet[i,col]
+  }
   return (dataSet)
 }
