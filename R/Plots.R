@@ -84,3 +84,50 @@ plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariabl
           legend.position = "bottom" #legend at the bottom
     )#end theme
 }
+
+#' Scatterplot Matrix (Plot)
+#'
+#' Generate a Scatterplot Matrix between a range using ggplot.
+#' 
+#' @param data.pca a list with class "prcomp" containing all principal components 
+#' calculated.
+#' @param from an integer that represent the first principal component that you 
+#' want in the scatterplot matrix.
+#' @param to an integer that represent the last principal component that you 
+#' want in the scatterplot matrix.
+#' @param dependentVariable is a list of values containig the dependent variable 
+#' of your regression model.
+#' @param dependentVariableName is an optional parameter. It's an string that
+#' contains de name of your dependent variable of your regression model.
+#' @seealso makePairs
+#' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
+#' @examples
+#' iris.x <- iris[,1:3]
+#' Petal.Width <- iris[,4]
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' 
+#' ScatterplotMatrix(ir.pca, 1, 3, Petal.Width, "Petal Width")
+ScatterplotMatrix<- function(data.pca, from, to, dependentVariable, dependentVariableName){
+  # expand data frame for pairs plot
+  PCAfromTo <- as.data.frame(data.pca$x[,from:to])
+  gg1 <- makePairs(PCAfromTo)
+  
+  #New data frame mega PCA from..to
+  mega_PCA <- data.frame(gg1$all, DependentVariable = rep(dependentVariable, length = nrow(gg1$all)))
+  DependentVariable <- rep(dependentVariable, length = nrow(gg1$all))
+  
+  # pairs plot
+  ggplot(mega_PCA, aes_string(x = "x", y = "y")) + 
+    facet_grid(xvar ~ yvar, scales = "free") + 
+    geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = 0.5, size = 1) + 
+    stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
+                 data = gg1$densities, position = "identity", 
+                 colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
+    scale_color_gradientn(name = dependentVariableName,
+                          colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+    theme(panel.grid.minor = element_blank(), #remove gridlines
+          legend.position = "bottom", #legend at the bottom
+          axis.title.x = element_blank(), #remove x label
+          axis.title.y = element_blank()  #remove y label
+    )#end theme
+}

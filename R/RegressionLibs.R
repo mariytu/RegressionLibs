@@ -256,3 +256,33 @@ CalculateVariance <- function(dataSet, col) {
   }
   return (dataSet)
 }
+
+#' Make Pairs Function
+#'
+#' Function that generate a data frame with the data used for ggplot function for
+#' make a scatterplot matrix.
+#' 
+#' @param dataSet an object of class data frame with a data set.
+#' @return an object of class data frame with the data used for ggplot function.
+#' @seealso ScatterplotMatrix
+#' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
+#' @examples
+#' iris.x <- iris[,1:4]
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' gg1 <- makePairs(ir.pca$x)
+makePairs <- function(dataSet){
+  grid <- expand.grid(x = 1:ncol(dataSet), y = 1:ncol(dataSet))
+  grid <- subset(grid, x != y)
+  all <- do.call("rbind", lapply(1:nrow(grid), function(i) {
+    xcol <- grid[i, "x"]
+    ycol <- grid[i, "y"]
+    data.frame(xvar = names(dataSet)[ycol], yvar = names(dataSet)[xcol], 
+               x = dataSet[, xcol], y = dataSet[, ycol], dataSet)
+  }))
+  all$xvar <- factor(all$xvar, levels = names(dataSet))
+  all$yvar <- factor(all$yvar, levels = names(dataSet))
+  densities <- do.call("rbind", lapply(1:ncol(dataSet), function(i) {
+    data.frame(xvar = names(dataSet)[i], yvar = names(dataSet)[i], x = dataSet[, i])
+  }))
+  list(all = all, densities = densities)
+}
