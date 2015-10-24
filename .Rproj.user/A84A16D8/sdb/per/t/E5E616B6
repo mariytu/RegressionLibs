@@ -1,0 +1,16 @@
+{
+    "contents" : "Package: RegressionLibs\nType: Package\nTitle: What the package does (short line)\nVersion: 1.0\nDate: 2015-10-23\nAuthor: Who wrote it\nMaintainer: Who to complain to <yourfault@somewhere.net>\nDescription: More about what it does (maybe more than one line)\nLicense: What license is it under?\nDepends:\n  ggbiplot\nSuggets:\n  devtools,\n  roxygen2",
+    "created" : 1445646346313.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1479718360",
+    "id" : "E5E616B6",
+    "lastKnownWriteTime" : 1445646395,
+    "path" : "C:/Users/Mary Iturriaga/Desktop/RegressionLibs/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "dcf"
+}
