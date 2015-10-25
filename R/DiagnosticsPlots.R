@@ -30,7 +30,7 @@ ResidualsFitted <- function(diagnostic, dependentVariableName) {
   }
   
   #All parameters are OK!
-  ggplot(diagnostic, aes(fitted, resid)) +
+  p <- ggplot(diagnostic, aes(fitted, resid)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName,
@@ -40,6 +40,8 @@ ResidualsFitted <- function(diagnostic, dependentVariableName) {
     ylab("Residuals") +
     theme(legend.position = "bottom" #legend at the bottom
     )#end theme
+  
+  return (p)
 }
 
 #' Standarized Residuals v/s Fitted Values (Plot)
@@ -74,7 +76,7 @@ StResidualsFitted <- function(diagnostic, dependentVariableName) {
   }
   
   #All parameters are OK!
-  ggplot(diagnostic, aes(fitted, sqrt.abs.stz.r)) +
+  p <- ggplot(diagnostic, aes(fitted, sqrt.abs.stz.r)) +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName,
                           colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
@@ -83,6 +85,8 @@ StResidualsFitted <- function(diagnostic, dependentVariableName) {
     ylab(expression(sqrt("|Standarized Residuals|"))) +
     theme(legend.position = "bottom" #legend at the bottom
     )#end theme
+  
+  return (p)
 }
 
 #' Normal-QQ (Plot)
@@ -125,13 +129,15 @@ NormalQQ <- function(diagnostic, dependentVariableName) {
   slope <- diff(a)/diff(b)
   int <- a[1] - slope * b[1]
   
-  ggplot(diagnostic, aes(sample = diagnostic$stz.r)) +
+  p <- ggplot(diagnostic, aes(sample = diagnostic$stz.r)) +
     stat_qq() +
     geom_abline(slope = slope, intercept = int, colour = "#299E98", linetype="dashed") +
     geom_abline(slope = 0, intercept = -2, colour = "#299E98", linetype="dashed") +
     geom_abline(slope = 0, intercept = 2, colour = "#299E98", linetype="dashed") +
     scale_x_continuous("Theoretical Quantiles") +
     scale_y_continuous("Standardized Residuals")
+  
+  return (p)
 }
 
 #' Leverange v/s Standarized Residuals (Plot)
@@ -166,7 +172,7 @@ StResidualsLeverange <- function(diagnostic, dependentVariableName) {
   }
   
   #All parameters are OK!
-  ggplot(diagnostic, aes(leverage, stz.r)) +
+  p <- ggplot(diagnostic, aes(leverage, stz.r)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName, colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
@@ -175,4 +181,6 @@ StResidualsLeverange <- function(diagnostic, dependentVariableName) {
     ylab("Standarized Residuals") +
     theme(legend.position = "bottom" #legend at the bottom
     )#end theme
+  
+  return (p)
 }

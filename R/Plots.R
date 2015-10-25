@@ -23,10 +23,12 @@ linePlot <- function(data.pca) {
   
   dataPlot <- data.frame(seqRow, data.pca$sdev)
   names(dataPlot) <- c("PCA", "Variances")
-  dataPlot <- dataPlot[1:10,]
+  if (nrow(dataPlot)>10) {
+    dataPlot <- dataPlot[1:10,]
+  }
   dataPlot <- CalculateVariance(dataPlot, 2)
   
-  ggplot(data = dataPlot, aes(x = PCA, y = Variances, group = 1)) +
+  p <- ggplot(data = dataPlot, aes(x = PCA, y = Variances, group = 1)) +
     geom_line(colour = "dodgerblue4", alpha = 0.5, size = 1) +
     geom_point(colour = "dodgerblue4", size = 2, alpha = 0.5) +
     expand_limits(y = 0) +
@@ -35,6 +37,8 @@ linePlot <- function(data.pca) {
     theme(panel.grid.minor = element_blank(), #remove gridlines
           legend.position = "bottom" #legend at the bottom
     )#end theme
+  
+  return (p)
 }
 
 #' Plot PCA (Plot)
@@ -83,13 +87,15 @@ plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariabl
   y_axis <- paste(c("PC", y_axis), collapse = "")
   names(PCs) <- c(x_axis, y_axis, "DependentVariable")
   
-  ggplot(PCs, aes_string(x = x_axis, y = y_axis)) + 
+  p <- ggplot(PCs, aes_string(x = x_axis, y = y_axis)) + 
     geom_point(aes(colour = PCs$DependentVariable), na.rm = TRUE, alpha = 0.8, size = 2) + 
     scale_color_gradientn(name = dependentVariableName,
                           colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
     theme(panel.grid.minor = element_blank(), #remove gridlines
           legend.position = "bottom" #legend at the bottom
     )#end theme
+  
+  return (p)
 }
 
 #' Scatterplot Matrix (Plot)
@@ -143,7 +149,7 @@ ScatterplotMatrix<- function(data.pca, from, to, dependentVariable, dependentVar
   DependentVariable <- rep(dependentVariable, length = nrow(gg1$all))
   
   # pairs plot
-  ggplot(mega_PCA, aes_string(x = "x", y = "y")) + 
+  p <- ggplot(mega_PCA, aes_string(x = "x", y = "y")) + 
     facet_grid(xvar ~ yvar, scales = "free") + 
     geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = 0.5, size = 1) + 
     stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
@@ -156,6 +162,8 @@ ScatterplotMatrix<- function(data.pca, from, to, dependentVariable, dependentVar
           axis.title.x = element_blank(), #remove x label
           axis.title.y = element_blank()  #remove y label
     )#end theme
+  
+  return (p)
 }
 
 #' Plot Columns of Matrices (Plot)
@@ -212,14 +220,14 @@ MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to,
   
   if (class(dependentVariable)=="numeric") {
     if (x_lab) {
-      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+      p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = 1) +
         scale_color_gradientn(name = dependentVariableName,
                               colours = c("darkred", "yellow", "darkgreen")) +
         xlab(x_name) + ylab("Values")
     }
     else {
-      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+      p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = 1) +
         scale_color_gradientn(name = dependentVariableName,
                               colours = c("darkred", "yellow", "darkgreen")) +
@@ -229,17 +237,19 @@ MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to,
   }
   else {
     if (x_lab) {
-      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+      p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = 1) +
         scale_color_discrete(name = dependentVariableName) +
         xlab(x_name) + ylab("Values")
     }
     else {
-      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+      p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = 1) +
         scale_color_discrete(name = dependentVariableName) +
         scale_x_discrete(breaks = c()) +
         xlab(x_name) + ylab("Values")
     }
   }
+  
+  return (p)
 }
