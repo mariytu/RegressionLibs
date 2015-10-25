@@ -21,10 +21,15 @@
 #' diagnostic <- diagnosticData(fit)
 #' ResidualsFitted(diagnostic, "Petal Width")
 ResidualsFitted <- function(diagnostic, dependentVariableName) {
+  
+  if (missing(diagnostic)) {
+    stop("Need to specify diagnostic!")
+  }
   if (missing("dependentVariableName")) {
     dependentVariableName <- "Dependent Variable"
   }
   
+  #All parameters are OK!
   ggplot(diagnostic, aes(fitted, resid)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
@@ -60,10 +65,15 @@ ResidualsFitted <- function(diagnostic, dependentVariableName) {
 #' diagnostic <- diagnosticData(fit)
 #' StResidualsFitted(diagnostic, "Petal Width")
 StResidualsFitted <- function(diagnostic, dependentVariableName) {
+  
+  if (missing(diagnostic)) {
+    stop("Need to specify diagnostic!")
+  }
   if (missing("dependentVariableName")) {
     dependentVariableName <- "Dependent Variable"
   }
   
+  #All parameters are OK!
   ggplot(diagnostic, aes(fitted, sqrt.abs.stz.r)) +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName,
@@ -102,10 +112,14 @@ StResidualsFitted <- function(diagnostic, dependentVariableName) {
 #' NormalQQ(diagnostic, "Petal Width")
 NormalQQ <- function(diagnostic, dependentVariableName) {
   
+  if (missing(diagnostic)) {
+    stop("Need to specify diagnostic!")
+  }
   if (missing("dependentVariableName")) {
     dependentVariableName <- "Dependent Variable"
   }
   
+  #All parameters are OK!
   a <- quantile(diagnostic$stz.r, c(0.25, 0.75))
   b <- qnorm(c(0.25, 0.75))
   slope <- diff(a)/diff(b)
@@ -143,10 +157,15 @@ NormalQQ <- function(diagnostic, dependentVariableName) {
 #' diagnostic <- diagnosticData(fit)
 #' StResidualsLeverange(diagnostic, "Petal Width")
 StResidualsLeverange <- function(diagnostic, dependentVariableName) {
+  
+  if (missing(diagnostic)) {
+    stop("Need to specify diagnostic!")
+  }
   if (missing("dependentVariableName")) {
     dependentVariableName <- "Dependent Variable"
   }
   
+  #All parameters are OK!
   ggplot(diagnostic, aes(leverage, stz.r)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 

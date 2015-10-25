@@ -12,6 +12,12 @@
 #' 
 #' linePlot(ir.pca)
 linePlot <- function(data.pca) {
+  
+  if (missing(data.pca)) {
+    stop("Need to specify data.pca!")
+  }
+  
+  #All parameters are OK!
   rowsData <- length(data.pca$sdev)
   seqRow <- seq(from = 1, to = rowsData, length.out = rowsData)
   
@@ -71,6 +77,7 @@ plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariabl
     dependentVariableName <- "Dependent Variable"
   }
   
+  #All parameters are OK!
   PCs <- data.frame(data.pca$x[,x_axis], data.pca$x[,y_axis], dependentVariable)
   x_axis <- paste(c("PC", x_axis), collapse = "")
   y_axis <- paste(c("PC", y_axis), collapse = "")
@@ -108,6 +115,25 @@ plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariabl
 #' 
 #' ScatterplotMatrix(ir.pca, 1, 3, Petal.Width, "Petal Width")
 ScatterplotMatrix<- function(data.pca, from, to, dependentVariable, dependentVariableName){
+  
+  if (missing(data.pca)) {
+    stop("Need to specify data.pca!")
+  }
+  if (missing(dependentVariable)) {
+    stop("Need to specify dependentVariable!")
+  }
+  if (missing(from) || missing(to)) {
+    from <- 1
+    to <- 3
+    if (ncol(data.pca$x) > to) {
+      to <- ncol(data.pca$x)
+    }
+  }
+  if (missing(dependentVariableName)) {
+    dependentVariableName <- "Dependent Variable"
+  }
+  
+  #All parameters are OK!
   # expand data frame for pairs plot
   PCAfromTo <- as.data.frame(data.pca$x[,from:to])
   gg1 <- makePairs(PCAfromTo)
@@ -130,4 +156,90 @@ ScatterplotMatrix<- function(data.pca, from, to, dependentVariable, dependentVar
           axis.title.x = element_blank(), #remove x label
           axis.title.y = element_blank()  #remove y label
     )#end theme
+}
+
+#' Plot Columns of Matrices (Plot)
+#'
+#' Generate a plot of the columns of a data set for all or a range of instances. In 
+#' some cases this is useful to identify some patron.
+#' 
+#' @param dataSet an object of class data frame with the a data set (Independent 
+#' variables).
+#' @param dependentVariable is a list of values containig the dependent variable 
+#' of your regression model.
+#' @param dependentVariableName is an optional parameter. It's an string that
+#' contains de name of your dependent variable of your regression model.
+#' @param from an integer that represent the first instance that you want in the plot.
+#' @param to an integer that represent the last instance that you want in the plot.
+#' @param x_lab a boolean that represent if you want or not the x axis scale. In 
+#' some cases, when you have many columns the plot could be ugly! The default value 
+#' is False.
+#' @examples
+#' iris.x <- iris[,1:4]
+#' dependetVariable <- iris[,5]
+#' MatPlot(iris.x, dependetVariable, "Species")
+#' MatPlot(iris.x, dependetVariable, "Species", x_lab = TRUE)
+MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to, x_lab) {
+  if (missing(dataSet)) {
+    stop("Need to specify dataSet!")
+  }
+  if (missing(dependentVariable)) {
+    stop("Need to specify dependentVariable!")
+  }
+  if (missing(dependentVariableName)) {
+    dependentVariableName <- "Dependent Variable"
+  }
+  if (missing(from) || missing(to)) {
+    from <- 1
+    to <- nrow(dataSet)
+  }
+  if (from > to) {
+    stop("from must be less than to!")
+  }
+  if (missing(x_lab)) {
+    x_lab = FALSE
+  }
+  
+  #All parameters are OK!
+  x_name = "Columns"
+  dataSet <- dataSet[from:to,]
+  dependentVariable <- dependentVariable[from:to]
+  rows <- nrow(dataSet)
+  x <- seq(from = 1, to = rows, length.out = rows)
+  data <- data.frame(x, dataSet)
+  dataPlot <- melt(data, id = "x")
+  dataPlot <- data.frame(dataPlot, dependentVariable)
+  
+  if (class(dependentVariable)=="numeric") {
+    if (x_lab) {
+      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+        geom_line(size = 1) +
+        scale_color_gradientn(name = dependentVariableName,
+                              colours = c("darkred", "yellow", "darkgreen")) +
+        xlab(x_name) + ylab("Values")
+    }
+    else {
+      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+        geom_line(size = 1) +
+        scale_color_gradientn(name = dependentVariableName,
+                              colours = c("darkred", "yellow", "darkgreen")) +
+        scale_x_discrete(breaks = c()) +
+        xlab(x_name) + ylab("Values")
+    }
+  }
+  else {
+    if (x_lab) {
+      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+        geom_line(size = 1) +
+        scale_color_discrete(name = dependentVariableName) +
+        xlab(x_name) + ylab("Values")
+    }
+    else {
+      ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+        geom_line(size = 1) +
+        scale_color_discrete(name = dependentVariableName) +
+        scale_x_discrete(breaks = c()) +
+        xlab(x_name) + ylab("Values")
+    }
+  }
 }

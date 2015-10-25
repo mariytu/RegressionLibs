@@ -23,7 +23,7 @@
 diagnosticData <- function(fit) {
   
   if (missing(fit)) {
-    stop("Need to specify fit value")
+    stop("Need to specify fit!")
   }
   else {
     if (!('model' %in% names(fit))) {
@@ -33,7 +33,7 @@ diagnosticData <- function(fit) {
   
   dependentVariableName <- "Dependent Variable"
   
-  #All parameters are OK
+  #All parameters are OK!
   diagnostic <- data.frame(fit$model[,2:ncol(fit$model)])
   dependentVariable <- data.frame(fit$model[,1])
   names(dependentVariable) <- c(dependentVariableName)
@@ -82,7 +82,7 @@ diagnosticData <- function(fit) {
 findMissingValues <- function (dataSet) {
   
   if (missing(dataSet)) {
-    stop("Need to specify dataSet")
+    stop("Need to specify dataSet!")
   }
   
   #All parameters are OK!
@@ -130,7 +130,7 @@ removeRowsMissing <- function (missingValues, dataSet) {
     stop("Need to specify missingValues!")
   }
   if (missing(dataSet)) {
-    stop("Need to specify dataSet")
+    stop("Need to specify dataSet!")
   }
   
   #All parameters are OK!
@@ -251,6 +251,15 @@ normalizeData<- function(dataSet, min, max){
 #' dataPlot <- data.frame(seqRow, ir.pca$sdev)
 #' dataPlot <- CalculateVariance(dataPlot, 2)
 CalculateVariance <- function(dataSet, col) {
+  
+  if (missing(dataSet)) {
+    stop("Need to specify dataSet!")
+  }
+  if (missing(col)) {
+    stop("Need to specify col!")
+  }
+  
+  #All parameters are OK!
   for (i in 1:nrow(dataSet)) {
     dataSet[i,col] <- dataSet[i,col]*dataSet[i,col]
   }
@@ -271,6 +280,12 @@ CalculateVariance <- function(dataSet, col) {
 #' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
 #' gg1 <- makePairs(ir.pca$x)
 makePairs <- function(dataSet){
+  
+  if (missing(dataSet)) {
+    stop("Need to specify dataSet!")
+  }
+  
+  #All parameters are OK!
   grid <- expand.grid(x = 1:ncol(dataSet), y = 1:ncol(dataSet))
   grid <- subset(grid, x != y)
   all <- do.call("rbind", lapply(1:nrow(grid), function(i) {
