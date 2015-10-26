@@ -286,3 +286,17 @@ DensityPlot <- function(data, col) {
   
   return (p)
 }
+
+PlotPC3D<- function(pca, from, to, performance){
+  PCAfromTO<-as.data.frame(pca$x[,from:to])
+  
+  PC1 <- PCAfromTO[,1]
+  PC2 <- PCAfromTO[,2]
+  PC3 <- PCAfromTO[,3]
+  x_lab <- paste(c("PC", from), collapse = "")
+  y_lab <- paste(c("PC", (from+1)), collapse = "")
+  z_lab <- paste(c("PC", to), collapse = "")
+  
+  cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), performance) 
+  plot3d(x = PC1, y = PC2, z = PC3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
+}

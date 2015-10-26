@@ -267,3 +267,9 @@ makePairs <- function(dataSet){
   }))
   list(all = all, densities = densities)
 }
+
+myColorRamp <- function(colors, values) {
+  v <- (values - min(values))/diff(range(values))
+  x <- colorRamp(colors)(v)
+  rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
