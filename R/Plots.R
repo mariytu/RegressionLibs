@@ -254,6 +254,16 @@ MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to,
   return (p)
 }
 
+#' Density Plot (Plot)
+#'
+#' Generate a density plot for a specific column of the data.
+#' 
+#' @param data an object of class data frame with the a data.
+#' @param col an integer that specify the column that you want for make the plot.
+#' @examples
+#' iris.x <- iris[,1:4]
+#' outlier.scores <- lof(iris.x, k = c(5:10))
+#' DensityPlot(outlier.scores, 1)
 DensityPlot <- function(data, col) {
   
   if (missing(data)) {

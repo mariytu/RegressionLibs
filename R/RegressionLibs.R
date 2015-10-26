@@ -329,12 +329,12 @@ removeRowsByRowName <- function (remove, dataSet) {
   j <- 1
   i <- 1
   while (i<=length(names) && j<=length(remove)) {
-    if (as.integer(names[i])==remove[j]) { #Remove row
+    if (as.integer(names[i])==as.integer(remove[j])) { #Remove row
       dataSet <- dataSet[-i,] #Remove row
       j <- j + 1
     }
     else {
-      if (as.integer(names[i]) > remove[j]) {
+      if (as.integer(names[i]) > as.integer(remove[j])) {
         j <- j + 1
       }
       i <- i + 1
