@@ -326,6 +326,7 @@ removeRowsByRowName <- function (remove, dataSet) {
   
   #All parameters are OK!
   names <- row.names(dataSet)
+  sort(remove)
   j <- 1
   i <- 1
   while (i<=length(names) && j<=length(remove)) {
