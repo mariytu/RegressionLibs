@@ -269,6 +269,7 @@ makePairs <- function(dataSet){
 }
 
 myColorRamp <- function(colors, values) {
+  #SOURCE: http://stackoverflow.com/questions/10413678/how-to-assign-color-scale-to-a-variable-in-a-3d-scatter-plot
   v <- (values - min(values))/diff(range(values))
   x <- colorRamp(colors)(v)
   rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
