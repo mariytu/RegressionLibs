@@ -88,7 +88,7 @@ plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariabl
   names(PCs) <- c(x_axis, y_axis, "DependentVariable")
   
   p <- ggplot(PCs, aes_string(x = x_axis, y = y_axis)) + 
-    geom_point(aes(colour = PCs$DependentVariable), na.rm = TRUE, alpha = 0.8, size = 2) + 
+    geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = 0.8, size = 2) + 
     scale_color_gradientn(name = dependentVariableName,
                           colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
     theme(panel.grid.minor = element_blank(), #remove gridlines
