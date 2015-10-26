@@ -24,7 +24,4 @@ if (any(NA_values)) { #Validation if missing values exist
    #Do something with your missing values
 }
 }
-\seealso{
-removeRowsMissing
-}
 

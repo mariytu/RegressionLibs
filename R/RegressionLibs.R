@@ -72,7 +72,6 @@ diagnosticData <- function(fit) {
 #' @param dataSet an object of class data frame with a data set.
 #' @return an integer(0) when no null values, or a data frame with all null values
 #' identified by their positions (i,j)
-#' @seealso removeRowsMissing
 #' @examples
 #' NA_values <- findMissingValues(iris)
 #' 
@@ -86,7 +85,7 @@ findMissingValues <- function (dataSet) {
   }
   
   #All parameters are OK!
-  data <- data.frame(i=integer(), j=integer(), row.name=integer(), stringsAsFactors=FALSE)
+  data <- data.frame(i=integer(), j=integer(), stringsAsFactors=FALSE)
   count <- 0
   for (i in 1:nrow(dataSet)) {
     vector <- which(is.na(dataSet[i,]))
@@ -95,7 +94,6 @@ findMissingValues <- function (dataSet) {
       for (j in 1:length(vector)) {
         data[nrow(data)+1,1] <- i
         data[nrow(data),2] <- vector[j]
-        data[nrow(data),3] <- as.integer(row.names(dataSet)[i])
       }
       count <- count + length(vector)
     }
@@ -107,51 +105,6 @@ findMissingValues <- function (dataSet) {
   else {
     return (data)
   }
-}
-
-#' Remove Missing Values of Data Set
-#'
-#' Delete all rows of data set that contains a missing value.
-#' 
-#' @param missingValues an object of class data frame with the possition (i,j) of 
-#' each missing value.
-#' @param dataSet an object of class data frame with the original data set.
-#' @return an object of class data frame with a modified data set without missing 
-#' values.
-#' @seealso findMissingValues
-#' @examples
-#' NA_values <- findMissingValues(iris)
-#' 
-#' if (any(NA_values)) { #Validation if missing values exist
-#'    iris <- removeRowsMissing(NA_values, iris) #Remove all rows with missing values
-#' }
-removeRowsMissing <- function (missingValues, dataSet) {
-  
-  if (missing(missingValues)) {
-    stop("Need to specify missingValues!")
-  }
-  if (missing(dataSet)) {
-    stop("Need to specify dataSet!")
-  }
-  
-  #All parameters are OK!
-  names <- row.names(dataSet)
-  j <- 1
-  i <- 1
-  while (i<=length(names) && j<=nrow(missingValues)) {
-    if (as.integer(names[i])==missingValues[j,3]) { #Remove row
-      dataSet <- dataSet[-i,] #Remove row
-      j <- j + 1
-    }
-    else {
-      if (as.integer(names[i]) > missingValues[j,3]) {
-        j <- j + 1
-      }
-      i <- i + 1
-    }
-  }
-  
-  return (dataSet)
 }
 
 #' Normalize Function
@@ -313,49 +266,4 @@ makePairs <- function(dataSet){
     data.frame(xvar = names(dataSet)[i], yvar = names(dataSet)[i], x = dataSet[, i])
   }))
   list(all = all, densities = densities)
-}
-
-#' Remove Rows by Row Name
-#'
-#' Delete all rows of data set that are contained in a vector.
-#' 
-#' @param remove a vector with the row names of instances that you want delete of 
-#' data set.
-#' @param dataSet an object of class data frame with the original data set.
-#' @return an object of class data frame with a modified data set without some 
-#' instances.
-#' @examples
-#' NA_values <- findMissingValues(iris)
-#' 
-#' if (any(NA_values)) { #Validation if missing values exist
-#'    iris <- removeRowsMissing(NA_values, iris) #Remove all rows with missing values
-#' }
-removeRowsByRowName <- function (remove, dataSet) {
-  
-  if (missing(remove)) {
-    stop("Need to specify remove!")
-  }
-  if (missing(dataSet)) {
-    stop("Need to specify dataSet!")
-  }
-  
-  #All parameters are OK!
-  names <- dataSet[,2]
-  remove <- sort(remove)
-  j <- 1
-  i <- 1
-  while (i<=length(names) && j<=length(remove)) {
-    if (names[i]==as.integer(remove[j])) { #Remove row
-      dataSet <- dataSet[-i,] #Remove row
-      j <- j + 1
-    }
-    else {
-      if (names[i] > as.integer(remove[j])) {
-        j <- j + 1
-      }
-      i <- i + 1
-    }
-  }
-  
-  return (dataSet)
 }
