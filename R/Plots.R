@@ -253,3 +253,26 @@ MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to,
   
   return (p)
 }
+
+DensityPlot <- function(data, col) {
+  
+  if (missing(data)) {
+    stop("Need to specify data!")
+  }
+  if (missing(col)) {
+    stop("Need to specify col!")
+  }
+  if (col > ncol(data)) {
+    stop("Col value must be less than ncol of data!")
+  }
+  
+  #All parameters are OK!
+  names(data)[col] <- "mean"
+  
+  p <- ggplot(data, aes(x = mean)) +
+    geom_density(colour="darkgreen", fill="darkgreen", alpha=0.3) + 
+    xlab("Values") + 
+    ylab("Density")
+  
+  return (p)
+}
