@@ -315,6 +315,21 @@ makePairs <- function(dataSet){
   list(all = all, densities = densities)
 }
 
+#' Remove Rows by Row Name
+#'
+#' Delete all rows of data set that are contained in a vector.
+#' 
+#' @param remove a vector with the row names of instances that you want delete of 
+#' data set.
+#' @param dataSet an object of class data frame with the original data set.
+#' @return an object of class data frame with a modified data set without some 
+#' instances.
+#' @examples
+#' NA_values <- findMissingValues(iris)
+#' 
+#' if (any(NA_values)) { #Validation if missing values exist
+#'    iris <- removeRowsMissing(NA_values, iris) #Remove all rows with missing values
+#' }
 removeRowsByRowName <- function (remove, dataSet) {
   
   if (missing(remove)) {
@@ -325,17 +340,17 @@ removeRowsByRowName <- function (remove, dataSet) {
   }
   
   #All parameters are OK!
-  names <- row.names(dataSet)
-  sort(remove)
+  names <- dataSet[,2]
+  remove <- sort(remove)
   j <- 1
   i <- 1
   while (i<=length(names) && j<=length(remove)) {
-    if (as.integer(names[i])==as.integer(remove[j])) { #Remove row
+    if (names[i]==as.integer(remove[j])) { #Remove row
       dataSet <- dataSet[-i,] #Remove row
       j <- j + 1
     }
     else {
-      if (as.integer(names[i]) > as.integer(remove[j])) {
+      if (names[i] > as.integer(remove[j])) {
         j <- j + 1
       }
       i <- i + 1
