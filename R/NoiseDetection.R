@@ -5,19 +5,12 @@ calculateDiff <- function(dataSet) {
   }
   
   #All parameters are OK!
-  resp <- data.frame(i=integer(), j=integer(), stringsAsFactors=FALSE)
+  resp <- data.frame(matrix(ncol = ncol(dataSet), nrow = nrow(dataSet)))
   
   for (i in 1:nrow(dataSet)) {
     before <- dataSet[i,1]
     for (j in 1:ncol(dataSet)) {
-      aux <- abs(dataSet[i,j] - before) / before
-      
-      if (j==1) {
-        resp[nrow(resp)+1,j] <- aux
-      }
-      else {
-        resp[nrow(resp),j] <- aux
-      }
+      resp[i,j] <- abs(dataSet[i,j] - before) / before
       
       before <- dataSet[i,j]
     }
