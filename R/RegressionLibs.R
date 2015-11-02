@@ -268,8 +268,20 @@ makePairs <- function(dataSet){
   list(all = all, densities = densities)
 }
 
+#' Color Ramp
+#'
+#' Function that transforms a list of values in their corresponding color in the 
+#' given list.
+#' 
+#' @param colors a list of name colors.
+#' @param values an object of class data frame with a dependent variable.
+#' @return a list colors in HEX format.
+#' @seealso PlotPC3D
+#' @source http://stackoverflow.com/questions/10413678/how-to-assign-color-scale-to-a-variable-in-a-3d-scatter-plot
+#' @examples
+#' iris.y <- iris[,4]
+#' cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), iris.y)
 myColorRamp <- function(colors, values) {
-  #SOURCE: http://stackoverflow.com/questions/10413678/how-to-assign-color-scale-to-a-variable-in-a-3d-scatter-plot
   v <- (values - min(values))/diff(range(values))
   x <- colorRamp(colors)(v)
   rgb(x[,1], x[,2], x[,3], maxColorValue = 255)

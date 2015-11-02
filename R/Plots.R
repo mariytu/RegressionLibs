@@ -287,8 +287,25 @@ DensityPlot <- function(data, col) {
   return (p)
 }
 
-PlotPC3D<- function(pca, from, to, performance){
-  PCAfromTO<-as.data.frame(pca$x[,from:to])
+#' Plot PC 3D (3DPlot)
+#'
+#' Generate a 3D plot for a range of principal components.
+#' 
+#' @param data.pca a list with class "prcomp" containing all principal components 
+#' calculated.
+#' @param from an integer that represent the first principal component that you 
+#' want in the plot.
+#' @param to an integer that represent the last principal component that you 
+#' want in the plot.
+#' @param dependentVariable is a list of values containig the dependent variable 
+#' of your regression model.
+#' @examples
+#' iris.x <- iris[,1:3]
+#' Petal.Width <- iris[,4]
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' PlotPC3D(ir.pca, 1, 3, Petal.Width)
+PlotPC3D<- function(data.pca, from, to, dependentVariable){
+  PCAfromTO<-as.data.frame(data.pca$x[,from:to])
   
   PC1 <- PCAfromTO[,1]
   PC2 <- PCAfromTO[,2]
@@ -297,6 +314,6 @@ PlotPC3D<- function(pca, from, to, performance){
   y_lab <- paste(c("PC", (from+1)), collapse = "")
   z_lab <- paste(c("PC", to), collapse = "")
   
-  cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), performance) 
+  cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), dependentVariable)
   plot3d(x = PC1, y = PC2, z = PC3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
 }
