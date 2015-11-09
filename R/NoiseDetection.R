@@ -95,9 +95,12 @@ noiseDetection <- function(data, limit, cuttingTolerantCount, inf, sup) {
   CutZone <- data.frame(matrix(ncol = ncol(data), nrow = nrow(data)))
   FinalCutZone <- data.frame(j=integer(),stringsAsFactors=FALSE)
   
-  for (i in 1:nrow(data)) {
+  rows <- nrow(data)
+  columns <- ncol(data)
+  
+  for (i in 1:rows) {
     before <- data[i,1]
-    for (j in 1:ncol(data)) {
+    for (j in 1:columns) {
       val <- data[i,j]
       if (j >= inf && j <= sup) {
         if ((abs(val - before) / before) >= limit) {
@@ -108,8 +111,8 @@ noiseDetection <- function(data, limit, cuttingTolerantCount, inf, sup) {
     }
   }
   
-  for (i in 1:nrow(data)) {
-    for (j in 1:ncol(data)) {
+  for (i in 1:rows) {
+    for (j in 1:columns) {
       if (j >= inf && j <= sup) {
         if (CutZone[i,j] == 1) {
           FinalCutZone[nrow(FinalCutZone)+1,1] <- 1
@@ -118,7 +121,7 @@ noiseDetection <- function(data, limit, cuttingTolerantCount, inf, sup) {
     }
   }
   
-  for (i in 1:ncol(data)) {
+  for (i in 1:columns) {
     if (FinalCutZone[i,1] == 1) {
       j <- 1
       cut <- 1
