@@ -87,12 +87,12 @@ getColumnsNoise <- function(data, limit, inf, sup) {
     }
   }
   
-  return (noise)
+    return (noise)
 }
 
 noiseDetection <- function(data, limit, cuttingTolerantCount, inf, sup) {
   
-  CutZone <- data.frame(matrix(ncol = ncol(data), nrow = nrow(data)))
+  CutZone <- data.frame(matrix(0, ncol = ncol(data), nrow = nrow(data)))
   FinalCutZone <- data.frame(j=integer(),stringsAsFactors=FALSE)
   
   rows <- nrow(data)
