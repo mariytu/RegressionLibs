@@ -93,7 +93,7 @@ getColumnsNoise <- function(data, limit, inf, sup) {
 noiseDetection <- function(data, limit, cuttingTolerantCount, inf, sup) {
   
   CutZone <- data.frame(matrix(0, ncol = ncol(data), nrow = nrow(data)))
-  FinalCutZone <- data.frame(j=integer(),stringsAsFactors=FALSE)
+  FinalCutZone <- data.frame(matrix(0, ncol = ncol(data), nrow = 1))
   
   rows <- nrow(data)
   columns <- ncol(data)
@@ -115,27 +115,27 @@ noiseDetection <- function(data, limit, cuttingTolerantCount, inf, sup) {
     for (j in 1:columns) {
       if (j >= inf && j <= sup) {
         if (CutZone[i,j] == 1) {
-          FinalCutZone[nrow(FinalCutZone)+1,1] <- 1
+          FinalCutZone[1,j] <- 1
         }
       }
     }
   }
   
-  for (i in 1:columns) {
-    if (FinalCutZone[i,1] == 1) {
-      j <- 1
+  for (j in 1:columns) {
+    if (FinalCutZone[1,j] == 1) {
+      i <- 1
       cut <- 1
-      while ((i+j) < ncol(data) && j <= cuttingTolerantCount) {
-        if (FinalCutZone[(i+j),1] != 1) {
+      while ((i+j) < columns && i <= cuttingTolerantCount) {
+        if (FinalCutZone[1,(i+j)] != 1) {
           cut <- 0
         }
-        j <- j + 1
+        i <- i + 1
       }
       if (cut == 1) {
-        FinalCutZone[i,1] <- 1
+        FinalCutZone[1,j] <- 1
       }
       else {
-        FinalCutZone[i,1] <- 0
+        FinalCutZone[1,j] <- 0
       }
     }
   }
