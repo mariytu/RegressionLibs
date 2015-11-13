@@ -260,8 +260,11 @@ MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to,
 #' 
 #' @param data an object of class data frame with the a data.
 #' @param col an integer that specify the column that you want for make the plot.
+#' @seealso http://www.rdatamining.com/examples/outlier-detection
 #' @examples
+#' library(RegressionLibs)
 #' library(Rlof) #Outlier detection library
+#' 
 #' iris.x <- iris[,1:4] #Get just numercial data
 #' outlier.scores <- lof(iris.x, k = 5) #applying outlier detection
 #' outlier.scores<-data.frame(outlier.scores)
@@ -273,7 +276,6 @@ MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to,
 #' outlier.scores <- lof(iris.x, k = c(5:10)) #applying outlier detection
 #' mean <- rowMeans(outlier.scores) #Calculating the mean of every execution
 #' outlier.scores<-data.frame(outlier.scores, mean) #adding mean to data frame
-#' 
 #' DensityPlot(outlier.scores, ncol(outlier.scores)) #Generating a plot of outliers scores
 DensityPlot <- function(data, col) {
   
