@@ -101,16 +101,26 @@ diagnosticData <- function(fit) {
 #' @param dataSet an object of class data frame with a data set.
 #' @return an integer(0) when no null values, or a data frame with all null values
 #' identified by their positions (i,j)
-#' @examples
-#' NA_values <- findMissingValues(iris)
 #' 
-#' if (any(NA_values)) { #Validation if missing values exist
-#'    #Do something with your missing values
+#' @examples
+#' #Example 1
+#' # Getting a data set with missing values
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autos.csv", sep = ";", dec = ",")
+#' 
+#' missingValues <- findMissingValues(cars) #Find missing values
+#' 
+#' if (any(missingValues)) { #Validation if missing values exist
+#'     missingValues <- missingValues[!duplicated(missingValues[,1]),] #Deleting duplicated rows
+#'     print(missingValues) # print all missing values found
+#'     cars <- cars[-missingValues[,1],] # deleting all rows that contains a missing values
 #' }
 findMissingValues <- function (dataSet) {
   
   if (missing(dataSet)) {
     stop("Need to specify dataSet!")
+  }
+  if (class(dataSet) != "data.frame") {
+    stop("dataSet must be a data frame class!")
   }
   
   #All parameters are OK!
