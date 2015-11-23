@@ -498,59 +498,101 @@ PlotPC3D<- function(data, columns, dependentVariable){
   }
 }
 
-#' Plot PCA (Plot)
+#' Simple Plot of 2 columns (Plot)
 #'
-#' Generate a plot of 2 Principal Components using ggplot. You must indicate which 
-#' PC you want in the graph.
+#' Generate a plot of 2 columns of data set using ggplot. You must indicate which 
+#' columns you want in the graph.
 #' 
-#' @param data.pca a list with class "prcomp" containing all principal components 
-#' calculated.
-#' @param dependentVariable is a list of values containig the dependent variable 
-#' of your regression model.
-#' @param x_axis an integer that represent the number of the principal component 
-#' that you want in your x axis.
-#' @param y_axis an integer that represent the number of the principal component 
-#' that you want in your y axis.
+#' @param data an object of class data frame with the data.
+#' @param dependentVariable an object of class "numeric", "factor" or "integer" is 
+#' a list of values containig the dependent variable.
+#' @param x_axis an integer that represent the number of the column that you want
+#' in your x axis.
+#' @param y_axis an integer that represent the number of the column that you want
+#' in your y axis.
 #' @param dependentVariableName is an optional parameter. It's an string that
-#' contains de name of your dependent variable of your regression model.
-#' @seealso linePlot
+#' contains the name of your dependent variable.
+#' @param pointSize is an optional parameter of class numeric with a single value 
+#' that represent the point size of plot.
+#' @param alphaPoint is an optional parameter of class numeric with a single value 
+#' that represent the alpha of points in the plot.
+#' 
+#' @seealso elbowPlot
+#' 
 #' @examples
 #' iris.x <- iris[,1:3]
 #' Petal.Width <- iris[,4]
 #' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
 #' 
 #' plotPC(ir.pca, Petal.Width, 1, 2, "Petal Width")
-plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariableName) {
+plotPC <- function(data, dependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint) {
   
-  if (missing("data.pca")) {
-    stop("Need to specify data.pca!")
+  if (missing(data)) {
+    stop("Need to specify data!")
   }
-  if (missing("dependentVariable")) {
+  if (class(data) != "data.frame") {
+    stop("data must be a data.frame class!")
+  }
+  if (missing(dependentVariable)) {
     stop("Need to specify dependentVariable!")
+  }
+  if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor" || class(dependentVariable) == "integer")) {
+    stop("dependentVariable must be a numeric, factor or integer class!")
   }
   if (missing("x_axis")) {
     stop("Need to specify x_axis!")
   }
+  if (!(class(x_axis) == "numeric" || class(x_axis) == "integer")) {
+    stop("x_axis must be a numeric or integer class!")
+  }
   if (missing("y_axis")) {
     stop("Need to specify y_axis!")
   }
-  if (missing("dependentVariableName")) {
+  if (!(class(y_axis) == "numeric" || class(y_axis) == "integer")) {
+    stop("y_axis must be a numeric or integer class!")
+  }
+  if (missing(dependentVariableName)) {
     dependentVariableName <- "Dependent Variable"
+  }
+  if (class(dependentVariableName) != "character") {
+    stop("dependentVariableName must be a character class!")
+  }
+  if (missing(pointSize)) {
+    pointSize <- 1
+  }
+  if (class(pointSize) != "numeric") {
+    stop("pointSize must be a numeric class!")
+  }
+  if (missing(alphaPoint)) {
+    alphaPoint <- 0.5
+  }
+  if (class(alphaPoint) != "numeric") {
+    stop("alphaPoint must be a numeric class!")
   }
   
   #All parameters are OK!
-  PCs <- data.frame(data.pca$x[,x_axis], data.pca$x[,y_axis], dependentVariable)
-  x_axis <- paste(c("PC", x_axis), collapse = "")
-  y_axis <- paste(c("PC", y_axis), collapse = "")
+  subData <- data.frame(data[,x_axis], data[,y_axis], dependentVariable)
+  x_axis <- colnames(subData)[1]
+  y_axis <- colnames(subData)[2]
   names(PCs) <- c(x_axis, y_axis, "DependentVariable")
   
-  p <- ggplot(PCs, aes_string(x = x_axis, y = y_axis)) + 
-    geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = 0.8, size = 2) + 
-    scale_color_gradientn(name = PCs$DependentVariable,
-                          colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
-    theme(panel.grid.minor = element_blank(), #remove gridlines
-          legend.position = "bottom" #legend at the bottom
-    )#end theme
+  if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+    p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
+      geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+      scale_color_gradientn(name = subData$DependentVariable,
+                            colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+      theme(panel.grid.minor = element_blank(), #remove gridlines
+            legend.position = "bottom" #legend at the bottom
+      )#end theme
+  }
+  else {
+    p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
+      geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+      scale_color_discrete(name = dependentVariableName) +
+      theme(panel.grid.minor = element_blank(), #remove gridlines
+            legend.position = "bottom" #legend at the bottom
+      )#end theme
+  }
   
   return (p)
 }
