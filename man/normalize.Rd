@@ -17,8 +17,16 @@ in range of 0 to 1.
 Function to normalize data set in range of 0 to 1.
 }
 \examples{
-iris.x <- iris[,1:4]
-normedIris <- as.data.frame(lapply(iris.x, normalize)) #In range [0,1]
+#Example 1
+iris.x <- iris[,1:4] #Just numerical columns witout missing values
+normedIris <- as.data.frame(lapply(iris.x, normalize)) # In range [0,1]
+
+
+#Example 2
+# Getting a data set without missing values
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+
+normedCars <- as.data.frame(lapply(cars, normalize)) # In range [0,1]
 }
 \seealso{
 scaleData, normalizeData

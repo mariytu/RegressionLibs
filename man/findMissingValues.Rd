@@ -18,10 +18,16 @@ Check out all data set to find missing values. Return a data frame, with the
 possition of each missing value.
 }
 \examples{
-NA_values <- findMissingValues(iris)
+#Example 1
+# Getting a data set with missing values
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autos.csv", sep = ";", dec = ",")
 
-if (any(NA_values)) { #Validation if missing values exist
-   #Do something with your missing values
+missingValues <- findMissingValues(cars) #Find missing values
+
+if (any(missingValues)) { #Validation if missing values exist
+    missingValues <- missingValues[!duplicated(missingValues[,1]),] #Deleting duplicated rows
+    print(missingValues) # print all missing values found
+    cars <- cars[-missingValues[,1],] # deleting all rows that contains a missing values
 }
 }
 

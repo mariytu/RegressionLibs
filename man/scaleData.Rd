@@ -22,9 +22,19 @@ Function to scale the data set. If you use normalize function first and then
 scaleData function you could obtain a normalize dataset in a range [x,y]
 }
 \examples{
-iris.x <- iris[,1:4]
+#Example 1
+iris.x <- iris[,1:4] #Just numerical columns witout missing values
+
 normed <- as.data.frame(lapply(iris.x, normalize))
-normedIris <- as.data.frame(lapply(normed, 1, 10, scaleData)) #In range [1,10]
+normedIris <- as.data.frame(lapply(normed, scaleData, 1, 10)) #In range [1,10]
+
+
+#Example 2
+# Getting a data set without missing values
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+
+normed <- as.data.frame(lapply(cars, normalize))
+normedCars <- as.data.frame(lapply(normed, scaleData, 1, 10)) #In range [1,10]
 }
 \seealso{
 normalize, normalizeData
