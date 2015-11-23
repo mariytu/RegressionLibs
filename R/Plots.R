@@ -447,7 +447,7 @@ PlotPC3D<- function(data, columns, dependentVariable){
   #All parameters are OK!
   subData<-data[,columns]
   
-  Col1 <- subData[,1]
+  col1 <- subData[,1]
   col2 <- subData[,2]
   col3 <- subData[,3]
   x_lab <- colnames(subData)[1]
