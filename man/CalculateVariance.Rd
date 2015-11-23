@@ -21,14 +21,18 @@ calculated.
 Function to calculate de variance of an specific column.
 }
 \examples{
-iris.x <- iris[,1:4]
+#This function is used by elbowPlot
+#Example 1
+iris.x <- iris[,1:4] # These are the independent variables
+# We know that there are no missing values in the data set
+
+# performing prcomp
 ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-rowsData <- length(ir.pca$sdev)
-seqRow <- seq(from = 1, to = rowsData, length.out = rowsData)
-dataPlot <- data.frame(seqRow, ir.pca$sdev)
-dataPlot <- CalculateVariance(dataPlot, 2)
+
+# Generating elbow plot to detect the most important principal components
+elbowPlot(ir.pca)
 }
 \seealso{
-linePlot
+elbowPlot
 }
 

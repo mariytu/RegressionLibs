@@ -22,10 +22,15 @@ Function that transforms a list of values in their corresponding color in the
 given list.
 }
 \examples{
-iris.y <- iris[,4]
-cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), iris.y)
+#This function is used by Plot3D
+#Example 1
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
+# 3D Plot of 3 first columns of data set
+Plot3D(iris.x, c(1,2,3), Species)
 }
 \seealso{
-PlotPC3D
+Plot3D
 }
 

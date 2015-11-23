@@ -448,7 +448,7 @@ DensityPlot <- function(data, col) {
 #' Species <- iris[,5] # This is the dependent variable
 #' 
 #' # 3D Plot of 3 first columns of data set
-#' PlotPC3D(iris.x, c(1,2,3), Species)
+#' Plot3D(iris.x, c(1,2,3), Species)
 #' 
 #' 
 #' #Example 2
@@ -458,7 +458,7 @@ DensityPlot <- function(data, col) {
 #' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) # performin prcomp
 #' 
 #' # 3D Plot of 3 first columns of data set
-#' PlotPC3D(as.data.frame(ir.pca$x), c(1,2,3), Species)
+#' Plot3D(as.data.frame(ir.pca$x), c(1,2,3), Species)
 #' 
 #' 
 #' #Example 3
@@ -468,7 +468,7 @@ DensityPlot <- function(data, col) {
 #' cars.y <- cars[,17] # This is the dependent variable
 #' 
 #' # 3D Plot of 3 first columns of data set
-#' PlotPC3D(cars.x, c(1,2,3), cars.y)
+#' Plot3D(cars.x, c(1,2,3), cars.y)
 #' 
 #' 
 #' #Example 4
@@ -480,8 +480,8 @@ DensityPlot <- function(data, col) {
 #' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE) # performin prcomp
 #' 
 #' # 3D Plot of 3 first columns of data set
-#' PlotPC3D(as.data.frame(cars.pca$x), c(1,2,3), cars.y)
-PlotPC3D<- function(data, columns, dependentVariable){
+#' Plot3D(as.data.frame(cars.pca$x), c(1,2,3), cars.y)
+Plot3D<- function(data, columns, dependentVariable){
   
   if (missing(data)) {
     stop("Need to specify data!")

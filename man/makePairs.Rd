@@ -20,9 +20,15 @@ Function that generate a data frame with the data used for ggplot function for
 make a scatterplot matrix.
 }
 \examples{
-iris.x <- iris[,1:4]
-ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-gg1 <- makePairs(ir.pca$x)
+#This function is used by ScatterplotMatrix
+#Example 1
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
+# A Scatterplot of all columns
+ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
+# A Scatterplot of somes columns and different point size and alpha point
+ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
 }
 \seealso{
 ScatterplotMatrix

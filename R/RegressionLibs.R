@@ -296,16 +296,23 @@ normalizeData<- function(dataSet, min, max){
 #' calculate the variance.
 #' @param col an integer that represent the column that you want calculate the
 #' variance.
+#' 
 #' @return an object of class data frame with a modified data set with variance
 #' calculated.
-#' @seealso linePlot
+#' 
+#' @seealso elbowPlot
+#' 
 #' @examples
-#' iris.x <- iris[,1:4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-#' rowsData <- length(ir.pca$sdev)
-#' seqRow <- seq(from = 1, to = rowsData, length.out = rowsData)
-#' dataPlot <- data.frame(seqRow, ir.pca$sdev)
-#' dataPlot <- CalculateVariance(dataPlot, 2)
+#' #This function is used by elbowPlot
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' # We know that there are no missing values in the data set
+#' 
+#' # performing prcomp
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) 
+#' 
+#' # Generating elbow plot to detect the most important principal components
+#' elbowPlot(ir.pca)
 CalculateVariance <- function(dataSet, col) {
   
   if (missing(dataSet)) {
@@ -329,12 +336,21 @@ CalculateVariance <- function(dataSet, col) {
 #' 
 #' @param dataSet an object of class data frame with a data set.
 #' @return an object of class data frame with the data used for ggplot function.
+#' 
 #' @seealso ScatterplotMatrix
+#' 
 #' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
+#' 
 #' @examples
-#' iris.x <- iris[,1:4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-#' gg1 <- makePairs(ir.pca$x)
+#' #This function is used by ScatterplotMatrix
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
+#' # A Scatterplot of all columns
+#' ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
+#' # A Scatterplot of somes columns and different point size and alpha point
+#' ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
 makePairs <- function(dataSet){
   
   if (missing(dataSet)) {
@@ -368,13 +384,18 @@ makePairs <- function(dataSet){
 #' 
 #' @return a list colors in HEX format.
 #' 
-#' @seealso PlotPC3D
+#' @seealso Plot3D
 #' 
 #' @source http://stackoverflow.com/questions/10413678/how-to-assign-color-scale-to-a-variable-in-a-3d-scatter-plot
 #' 
 #' @examples
-#' iris.y <- iris[,4]
-#' cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), iris.y)
+#' #This function is used by Plot3D
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
+#' # 3D Plot of 3 first columns of data set
+#' Plot3D(iris.x, c(1,2,3), Species)
 myColorRamp <- function(colors, values) {
   v <- (values - min(values))/diff(range(values))
   x <- colorRamp(colors)(v)
