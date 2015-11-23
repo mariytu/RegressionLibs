@@ -48,6 +48,33 @@ outlier.scores <- lof(iris.x, k = c(5:10)) #applying outlier detection
 mean <- rowMeans(outlier.scores) #Calculating the mean of every execution
 outlier.scores <- data.frame(outlier.scores, mean) #adding mean to data frame
 DensityPlot(outlier.scores, ncol(outlier.scores)) #Generating a plot of outliers scores
+
+
+#Example 4
+#install.packages("Rlof")
+library(Rlof) #Outlier detection library
+library(plyr)
+# Getting a data set without missing values
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+
+cars.x <- cars[,1:16] # These are the independent variables
+cars.y <- cars[,17] # This is the dependent variable
+
+outlier.scores <- lof(cars.x, k = c(5:10)) #applying outlier detection
+mean <- rowMeans(outlier.scores) #Calculating the mean of every execution
+outlier.scores <- data.frame(outlier.scores, mean) #adding mean to data frame
+DensityPlot(outlier.scores, ncol(outlier.scores)) #Generating a plot of outliers scores
+
+aux <- outlier.scores[,7]>1.7 #1.7 is the threshold selected
+count(aux)[2,2] #Number of outliers found
+outliers <- order(outlier.scores[,7], decreasing=T)[1:count(aux)[2,2]] #Getting the values that are on the threshold
+Score <- outlier.scores[outliers,7] #Getting outliers scores
+outliers <- data.frame(outliers,Score)
+names(outliers) <- c("Position","Score")
+View(outliers)
+
+auxOutliers <- outlier.scores[-outliers[1:3,1],] #Eliminating the 3 most remote instances!
+DensityPlot(auxOutliers, ncol(outlier.scores)) #Generating a plot of outliers scores
 }
 \seealso{
 http://www.rdatamining.com/examples/outlier-detection

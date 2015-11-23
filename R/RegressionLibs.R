@@ -247,9 +247,19 @@ scaleData <- function(dataSet, min, max){
 #' @seealso normalize, scaleData
 #' 
 #' @examples
-#' iris.x <- iris[,1:4]
-#' normedIris <- normalizeData(iris) #In range [0,1]
-#' normedIris <- normalizeData(iris, 1, 10) #In ragen [1,10]
+#' #Example 1
+#' iris.x <- iris[,1:4] #Just numerical columns witout missing values
+#' 
+#' normedIris1 <- normalizeData(iris.x) #In range [0,1]
+#' normedIris2 <- normalizeData(iris.x, 1, 10) #In ragen [1,10]
+#' 
+#' 
+#' #Example 2
+#' # Getting a data set without missing values
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' 
+#' normedCars1 <- normalizeData(cars) #In range [0,1]
+#' normedCars2 <- normalizeData(cars, 1, 10) #In ragen [1,10]
 normalizeData<- function(dataSet, min, max){
   
   if (missing(dataSet)) {
