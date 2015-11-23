@@ -173,7 +173,7 @@ normalize <- function(dataSet){
     stop("Need to specify dataSet!")
   }
   if (class(dataSet) != "data.frame") {
-    stop("dataSet must be a data frame class!")
+    stop("dataSet must be a data frame class1!")
   }
   
   #All parameters are OK!
@@ -214,7 +214,7 @@ scaleData <- function(dataSet, min, max){
     stop("Need to specify dataSet!")
   }
   if (class(dataSet) != "data.frame") {
-    stop("dataSet must be a data frame class!")
+    stop("dataSet must be a data frame class2!")
   }
   if (missing(min)) {
     stop("Need to specify min!")
@@ -262,7 +262,7 @@ normalizeData<- function(dataSet, min, max){
     stop("Need to specify dataSet!")
   }
   if (class(dataSet) != "data.frame") {
-    stop("dataSet must be a data frame class!")
+    stop("dataSet must be a data frame class3!")
   }
   if (missing(min)) {
     min <- 0
