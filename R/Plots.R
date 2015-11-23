@@ -574,7 +574,7 @@ plotPC <- function(data, dependentVariable, x_axis, y_axis, dependentVariableNam
   subData <- data.frame(data[,x_axis], data[,y_axis], dependentVariable)
   x_axis <- colnames(subData)[1]
   y_axis <- colnames(subData)[2]
-  names(PCs) <- c(x_axis, y_axis, "DependentVariable")
+  names(subData) <- c(x_axis, y_axis, "DependentVariable")
   
   if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
     p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
