@@ -504,7 +504,7 @@ PlotPC3D<- function(data, columns, dependentVariable){
 #' columns you want in the graph.
 #' 
 #' @param data an object of class data frame with the data.
-#' @param dependentVariable an object of class "numeric", "factor" or "integer" is 
+#' @param DependentVariable an object of class "numeric", "factor" or "integer" is 
 #' a list of values containig the dependent variable.
 #' @param x_axis an integer that represent the number of the column that you want
 #' in your x axis.
@@ -525,7 +525,7 @@ PlotPC3D<- function(data, columns, dependentVariable){
 #' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
 #' 
 #' plotPC(ir.pca, Petal.Width, 1, 2, "Petal Width")
-plotPC <- function(data, dependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint) {
+plotPC <- function(data, DependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint) {
   
   if (missing(data)) {
     stop("Need to specify data!")
@@ -533,11 +533,11 @@ plotPC <- function(data, dependentVariable, x_axis, y_axis, dependentVariableNam
   if (class(data) != "data.frame") {
     stop("data must be a data.frame class!")
   }
-  if (missing(dependentVariable)) {
-    stop("Need to specify dependentVariable!")
+  if (missing(DependentVariable)) {
+    stop("Need to specify DependentVariable!")
   }
-  if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor" || class(dependentVariable) == "integer")) {
-    stop("dependentVariable must be a numeric, factor or integer class!")
+  if (!(class(DependentVariable) == "numeric" || class(DependentVariable) == "factor" || class(DependentVariable) == "integer")) {
+    stop("DependentVariable must be a numeric, factor or integer class!")
   }
   if (missing("x_axis")) {
     stop("Need to specify x_axis!")
@@ -571,14 +571,14 @@ plotPC <- function(data, dependentVariable, x_axis, y_axis, dependentVariableNam
   }
   
   #All parameters are OK!
-  subData <- data.frame(data[,x_axis], data[,y_axis], dependentVariable)
+  subData <- data.frame(data[,x_axis], data[,y_axis], DependentVariable)
   x_axis <- colnames(subData)[1]
   y_axis <- colnames(subData)[2]
   names(subData) <- c(x_axis, y_axis, "DependentVariable")
   
-  if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+  if (class(DependentVariable) == "numeric" || class(DependentVariable) == "integer") {
     p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
-      geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
       scale_color_gradientn(name = subData$DependentVariable,
                             colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
       theme(panel.grid.minor = element_blank(), #remove gridlines
@@ -587,7 +587,7 @@ plotPC <- function(data, dependentVariable, x_axis, y_axis, dependentVariableNam
   }
   else {
     p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
-      geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
       scale_color_discrete(name = dependentVariableName) +
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom" #legend at the bottom
