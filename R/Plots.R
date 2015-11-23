@@ -72,8 +72,10 @@ elbowPlot <- function(data.pca) {
 #' values containig the dependent variable.
 #' @param dependentVariableName is an optional parameter. It's an string that
 #' contains de name of your dependent variable.
-#' @param pointSize a variable of class numeric with a single value that represent
-#' the point size of plot.
+#' @param pointSize is an optional parameter of class numeric with a single value 
+#' that represent the point size of plot.
+#' @param alphaPoint is an optional parameter of class numeric with a single value 
+#' that represent the alpha of points in the plot.
 #' @seealso makePairs
 #' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 #' @examples
@@ -91,7 +93,7 @@ elbowPlot <- function(data.pca) {
 #' 
 #' 
 #' 
-ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariableName, pointSize){
+ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariableName, pointSize, alphaPoint){
   
   if (missing(data)) {
     stop("Need to specify data!")
@@ -123,6 +125,12 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   if (class(pointSize) != "numeric") {
     stop("pointSize must be a numeric class!")
   }
+  if (missing(alphaPoint)) {
+    alphaPoint <- 0.5
+  }
+  if (class(alphaPoint) != "numeric") {
+    stop("alphaPoint must be a numeric class!")
+  }
   
   #All parameters are OK!
   # expand data frame for pairs plot
@@ -137,7 +145,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   if (class(dependentVariable)=="numeric") {
     p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
       facet_grid(xvar ~ yvar, scales = "free") + 
-      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = 0.5, size = pointSize) + 
+      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
       stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
                    data = gg1$densities, position = "identity", 
                    colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
