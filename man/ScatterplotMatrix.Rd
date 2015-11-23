@@ -20,7 +20,7 @@ that you want in your scatterplot.}
 a list of values containig the dependent variable.}
 
 \item{dependentVariableName}{is an optional parameter. It's an string that
-contains de name of your dependent variable.}
+contains the name of your dependent variable.}
 
 \item{pointSize}{is an optional parameter of class numeric with a single value
 that represent the point size of plot.}
@@ -36,13 +36,35 @@ Generate a Scatterplot Matrix of some columns of data set using ggplot.
 iris.x <- iris[,1:4] # These are the independent variables
 Species <- iris[,5] # This is the dependent variable
 
-# An Scatterplot of all columns
+# A Scatterplot of all columns
 ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
-# An Scatterplot of somes columns and different point size and alpha point
+# A Scatterplot of somes columns and different point size and alpha point
 ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
 
 
 #Example 2
+# Getting a clean data set (without missing values)
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+cars.x <- cars[,1:16] # These are the independent variables
+cars.y <- cars[,17] # This is the dependent variable
+
+# A Scatterplot of some columns
+ScatterplotMatrix(cars.x, seq(3, 8, 1), cars.y, "Price")
+# A Scatterplot of somes columns and different point size and alpha point
+ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 2, 1)
+
+
+#Example 3
+# Getting a clean data set (without missing values)
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+cars.x <- cars[,1:16] # These are the independent variables
+cars.y <- cars[,17] # This is the dependent variable
+
+# Performing prcomp
+cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE)
+
+# A Scatterplot of some columns of principal components
+ScatterplotMatrix(as.data.frame(cars.pca$x), seq(1, 4, 1), cars.y, "Price")
 }
 \seealso{
 makePairs

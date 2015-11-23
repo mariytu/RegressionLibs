@@ -83,9 +83,9 @@ elbowPlot <- function(data.pca) {
 #' iris.x <- iris[,1:4] # These are the independent variables
 #' Species <- iris[,5] # This is the dependent variable
 #' 
-#' # An Scatterplot of all columns
+#' # A Scatterplot of all columns
 #' ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
-#' # An Scatterplot of somes columns and different point size and alpha point
+#' # A Scatterplot of somes columns and different point size and alpha point
 #' ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
 #' 
 #' 
@@ -95,9 +95,9 @@ elbowPlot <- function(data.pca) {
 #' cars.x <- cars[,1:16] # These are the independent variables
 #' cars.y <- cars[,17] # This is the dependent variable
 #' 
-#' # An Scatterplot of some columns
+#' # A Scatterplot of some columns
 #' ScatterplotMatrix(cars.x, seq(3, 8, 1), cars.y, "Price")
-#' # An Scatterplot of somes columns and different point size and alpha point
+#' # A Scatterplot of somes columns and different point size and alpha point
 #' ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 2, 1)
 #' 
 #' 
@@ -110,7 +110,7 @@ elbowPlot <- function(data.pca) {
 #' # Performing prcomp
 #' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE)
 #' 
-#' # An Scatterplot of some columns of principal components
+#' # A Scatterplot of some columns of principal components
 #' ScatterplotMatrix(as.data.frame(cars.pca$x), seq(1, 4, 1), cars.y, "Price")
 ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariableName, pointSize, alphaPoint){
   
@@ -221,8 +221,22 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' iris.x <- iris[,1:4] # These are the independent variables
 #' Species <- iris[,5] # This is the dependent variable
 #' 
-#' # An ParallelPlot of all rows
-#' ParallelPlot(iris.x, seq(1,nrow(iris.x),1), Species, "Species", 1, 0.5, TRUE)
+#' # A ParallelPlot of all rows and all columns
+#' ParallelPlot(iris.x, seq(1,nrow(iris.x),1), seq(1,ncol(iris.x),1), Species, "Species", 1, 0.5, TRUE)
+#' # A ParallelPlot of all rows and some columns
+#' ParallelPlot(iris.x, seq(1,nrow(iris.x),1), c(3,4), Species, "Species", 1, 0.5, TRUE)
+#' 
+#' 
+#' #Example 2
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' # A ParallelPlot of all rows and all columns
+#' ParallelPlot(cars.x, seq(1,nrow(cars.x),1), seq(1,ncol(cars.x),1), cars.y, "Price", 1, 0.5, TRUE)
+#' # A ParallelPlot of all rows and some columns
+#' ParallelPlot(cars.x, seq(1,nrow(cars.x),1), c(1,2,5,8,13,14), cars.y, "Price", 1, 0.8, TRUE)
 ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariableName, lineSize, alphaLine, x_lab) {
   if (missing(data)) {
     stop("Need to specify data!")
@@ -323,21 +337,41 @@ ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariab
 #'
 #' Generate a density plot for a specific column of the data.
 #' 
-#' @param data an object of class data frame with the a data.
+#' @param data an object of class data frame with the data.
 #' @param col an integer that specify the column that you want for make the plot.
+#' 
 #' @seealso http://www.rdatamining.com/examples/outlier-detection
+#' 
 #' @examples
-#' library(RegressionLibs)
+#' #Example 1
+#' #install.packages("Rlof")
+#' library(Rlof) #for outlier detection
+#' 
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
+#' DensityPlot(iris.x,1)
+#' 
+#' 
+#' #Example 2
+#' #install.packages("Rlof")
 #' library(Rlof) #Outlier detection library
 #' 
-#' iris.x <- iris[,1:4] #Get just numercial data
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
 #' outlier.scores <- lof(iris.x, k = 5) #applying outlier detection
-#' outlier.scores<-data.frame(outlier.scores)
+#' outlier.scores < -data.frame(outlier.scores)
 #' DensityPlot(outlier.scores, 1) #Generating a plot of outliers scores
 #' 
 #' 
+#' #Example 3
+#' #install.packages("Rlof")
 #' library(Rlof) #Outlier detection library
-#' iris.x <- iris[,1:4] #Get just numercial data
+#' 
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
 #' outlier.scores <- lof(iris.x, k = c(5:10)) #applying outlier detection
 #' mean <- rowMeans(outlier.scores) #Calculating the mean of every execution
 #' outlier.scores<-data.frame(outlier.scores, mean) #adding mean to data frame
@@ -347,8 +381,14 @@ DensityPlot <- function(data, col) {
   if (missing(data)) {
     stop("Need to specify data!")
   }
+  if (class(data) != "data.frame") {
+    stop("data must be a data frame class!")
+  }
   if (missing(col)) {
     stop("Need to specify col!")
+  }
+  if (class(col) != "numeric") {
+    stop("col must be a numeric class!")
   }
   if (col > ncol(data)) {
     stop("Col value must be less than ncol of data!")

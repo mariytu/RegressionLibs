@@ -7,7 +7,7 @@
 DensityPlot(data, col)
 }
 \arguments{
-\item{data}{an object of class data frame with the a data.}
+\item{data}{an object of class data frame with the data.}
 
 \item{col}{an integer that specify the column that you want for make the plot.}
 }
@@ -15,17 +15,35 @@ DensityPlot(data, col)
 Generate a density plot for a specific column of the data.
 }
 \examples{
-library(RegressionLibs)
+#Example 1
+#install.packages("Rlof")
+library(Rlof) #for outlier detection
+
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
+DensityPlot(iris.x,1)
+
+
+#Example 2
+#install.packages("Rlof")
 library(Rlof) #Outlier detection library
 
-iris.x <- iris[,1:4] #Get just numercial data
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
 outlier.scores <- lof(iris.x, k = 5) #applying outlier detection
-outlier.scores<-data.frame(outlier.scores)
+outlier.scores < -data.frame(outlier.scores)
 DensityPlot(outlier.scores, 1) #Generating a plot of outliers scores
 
 
+#Example 3
+#install.packages("Rlof")
 library(Rlof) #Outlier detection library
-iris.x <- iris[,1:4] #Get just numercial data
+
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
 outlier.scores <- lof(iris.x, k = c(5:10)) #applying outlier detection
 mean <- rowMeans(outlier.scores) #Calculating the mean of every execution
 outlier.scores<-data.frame(outlier.scores, mean) #adding mean to data frame
