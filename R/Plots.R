@@ -520,12 +520,35 @@ PlotPC3D<- function(data, columns, dependentVariable){
 #' @seealso elbowPlot
 #' 
 #' @examples
-#' iris.x <- iris[,1:3]
-#' Petal.Width <- iris[,4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
 #' 
-#' plotPC(ir.pca, Petal.Width, 1, 2, "Petal Width")
-plotPC <- function(data, DependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint) {
+#' # Plot of first 2 columns of data set
+#' simplePlot(iris.x, Species, 1, 2, "Species", 2, 0.9)
+#' 
+#' 
+#' #Example 2
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) #performing prcomp
+#' 
+#' # Plot of first 2 columns of principal components
+#' simplePlot(as.data.frame(ir.pca$x), Species, 1, 2, "Species", 2, 0.9)
+#' 
+#' 
+#' #Example 3
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE) #performing prcomp
+#' 
+#' # Plot of first 2 columns of principal components
+#' simplePlot(as.data.frame(cars.pca$x), cars.y, 1, 2, "Price", 2, 0.9)
+simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint) {
   
   if (missing(data)) {
     stop("Need to specify data!")
