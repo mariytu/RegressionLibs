@@ -33,7 +33,7 @@ iris.x <- iris[,1:4] # These are the independent variables
 Species <- iris[,5] # This is the dependent variable
 
 outlier.scores <- lof(iris.x, k = 5) #applying outlier detection
-outlier.scores < -data.frame(outlier.scores)
+outlier.scores <- data.frame(outlier.scores)
 DensityPlot(outlier.scores, 1) #Generating a plot of outliers scores
 
 
@@ -46,7 +46,7 @@ Species <- iris[,5] # This is the dependent variable
 
 outlier.scores <- lof(iris.x, k = c(5:10)) #applying outlier detection
 mean <- rowMeans(outlier.scores) #Calculating the mean of every execution
-outlier.scores<-data.frame(outlier.scores, mean) #adding mean to data frame
+outlier.scores <- data.frame(outlier.scores, mean) #adding mean to data frame
 DensityPlot(outlier.scores, ncol(outlier.scores)) #Generating a plot of outliers scores
 }
 \seealso{
