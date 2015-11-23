@@ -71,7 +71,7 @@ elbowPlot <- function(data.pca) {
 #' @param dependentVariable an object of class "numeric", "factor" or "integer" is 
 #' a list of values containig the dependent variable.
 #' @param dependentVariableName is an optional parameter. It's an string that
-#' contains de name of your dependent variable.
+#' contains the name of your dependent variable.
 #' @param pointSize is an optional parameter of class numeric with a single value 
 #' that represent the point size of plot.
 #' @param alphaPoint is an optional parameter of class numeric with a single value 
@@ -90,9 +90,28 @@ elbowPlot <- function(data.pca) {
 #' 
 #' 
 #' #Example 2
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' # An Scatterplot of some columns
+#' ScatterplotMatrix(cars.x, seq(3, 8, 1), cars.y, "Price")
+#' # An Scatterplot of somes columns and different point size and alpha point
+#' ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 2, 1)
 #' 
 #' 
+#' #Example 3
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
 #' 
+#' # Performing prcomp
+#' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE)
+#' 
+#' # An Scatterplot of some columns of principal components
+#' ScatterplotMatrix(as.data.frame(cars.pca$x), seq(1, 4, 1), cars.y, "Price")
 ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariableName, pointSize, alphaPoint){
   
   if (missing(data)) {
@@ -111,7 +130,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
     stop("Need to specify dependentVariable!")
   }
   if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor" || class(dependentVariable) == "integer")) {
-    stop("dependentVariable must be a numeric or factor class!")
+    stop("dependentVariable must be a numeric, factor or integer class!")
   }
   if (missing(dependentVariableName)) {
     dependentVariableName <- "Dependent Variable"
@@ -175,59 +194,70 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   return (p)
 }
 
-#' Plot Columns of Matrices (Plot)
+#' Parallel Plot (Plot)
 #'
 #' Generate a plot of the columns of a data set for all or a range of instances. In 
 #' some cases this is useful to identify some patron.
 #' 
-#' @param dataSet an object of class data frame with the a data set (Independent 
-#' variables).
-#' @param dependentVariable is a list of values containig the dependent variable 
-#' of your regression model.
+#' @param data an object of class "data.frame" containing just numerical columns.
+#' @param rows an object of class "numeric" containing the list of rows
+#' that you want in your parallel plot.
+#' @param dependentVariable an object of class "numeric", "factor" or "integer" is 
+#' a list of values containig the dependent variable.
 #' @param dependentVariableName is an optional parameter. It's an string that
-#' contains de name of your dependent variable of your regression model.
-#' @param from an integer that represent the first instance that you want in the plot.
-#' @param to an integer that represent the last instance that you want in the plot.
+#' contains the name of your dependent variable.
 #' @param x_lab a boolean that represent if you want or not the x axis scale. In 
 #' some cases, when you have many columns the plot could be ugly! The default value 
 #' is False.
+#' 
 #' @examples
 #' iris.x <- iris[,1:4]
 #' dependetVariable <- iris[,5]
-#' MatPlot(iris.x, dependetVariable, "Species")
-#' MatPlot(iris.x, dependetVariable, "Species", x_lab = TRUE)
-MatPlot <- function(dataSet, dependentVariable, dependentVariableName, from, to, x_lab) {
-  if (missing(dataSet)) {
-    stop("Need to specify dataSet!")
+#' ParallelPlot(iris.x, dependetVariable, "Species")
+#' ParallelPlot(iris.x, dependetVariable, "Species", x_lab = TRUE)
+ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, x_lab) {
+  if (missing(data)) {
+    stop("Need to specify data!")
+  }
+  if (class(data) != "data.frame") {
+    stop("data must be a data.frame class!")
+  }
+  if (missing(rows)) {
+    stop("Need to specify rows!")
+  }
+  if (class(rows) != "numeric") {
+    stop("rows must be a numeric class!")
   }
   if (missing(dependentVariable)) {
     stop("Need to specify dependentVariable!")
   }
+  if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor" || class(dependentVariable) == "integer")) {
+    stop("dependentVariable must be a numeric or factor class!")
+  }
   if (missing(dependentVariableName)) {
     dependentVariableName <- "Dependent Variable"
   }
-  if (missing(from) || missing(to)) {
-    from <- 1
-    to <- nrow(dataSet)
-  }
-  if (from > to) {
-    stop("from must be less than to!")
+  if (class(dependentVariableName) != "character") {
+    stop("dependentVariableName must be a character class!")
   }
   if (missing(x_lab)) {
     x_lab = FALSE
   }
+  if(class(x_lab) != "logical") {
+    stop("x_lab must be a logical class!")
+  }
   
   #All parameters are OK!
   x_name = "Columns"
-  dataSet <- dataSet[from:to,]
-  dependentVariable <- dependentVariable[from:to]
-  rows <- nrow(dataSet)
-  x <- seq(from = 1, to = rows, length.out = rows)
-  data <- data.frame(x, dataSet)
+  subData <- data[rows,]
+  dependentVariable <- dependentVariable[rows]
+  rowsNum <- nrow(subData)
+  x <- seq(from = 1, to = rowsNum, length.out = rowsNum)
+  data <- data.frame(x, subData)
   dataPlot <- melt(data, id = "x")
   dataPlot <- data.frame(dataPlot, dependentVariable)
   
-  if (class(dependentVariable)=="numeric") {
+  if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
     if (x_lab) {
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = 1) +
