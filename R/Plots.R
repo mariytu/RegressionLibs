@@ -584,7 +584,8 @@ plotPC <- function(data, DependentVariable, x_axis, y_axis, dependentVariableNam
                             colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom" #legend at the bottom
-      )#end theme
+      ) + #end theme
+      xlab(x_axis) + ylab(y_axis)
   }
   else {
     p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
@@ -592,7 +593,8 @@ plotPC <- function(data, DependentVariable, x_axis, y_axis, dependentVariableNam
       scale_color_discrete(name = dependentVariableName) +
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom" #legend at the bottom
-      )#end theme
+      ) + #end theme
+      xlab(x_axis) + ylab(y_axis)
   }
   
   return (p)
