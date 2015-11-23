@@ -142,7 +142,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   DependentVariable <- rep(dependentVariable, length = nrow(gg1$all))
   
   # pairs plot
-  if (class(dependentVariable)=="numeric") {
+  if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
     p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
       facet_grid(xvar ~ yvar, scales = "free") + 
       geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
