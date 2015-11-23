@@ -10,7 +10,8 @@ License: What license is it under?
 Depends:
   ggplot2,
   rgl,
-  reshape
+  reshape,
+  plyr
 Suggets:
   devtools,
   roxygen2
