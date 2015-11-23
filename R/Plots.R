@@ -202,6 +202,8 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' @param data an object of class "data.frame" containing just numerical columns.
 #' @param rows an object of class "numeric" containing the list of rows
 #' that you want in your parallel plot.
+#' @param columns an object of class "numeric" containing the list of columns
+#' that you want in your parallel plot.
 #' @param dependentVariable an object of class "numeric", "factor" or "integer" is 
 #' a list of values containig the dependent variable.
 #' @param dependentVariableName is an optional parameter. It's an string that
@@ -215,11 +217,13 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' is False.
 #' 
 #' @examples
-#' iris.x <- iris[,1:4]
-#' dependetVariable <- iris[,5]
-#' ParallelPlot(iris.x, dependetVariable, "Species")
-#' ParallelPlot(iris.x, dependetVariable, "Species", x_lab = TRUE)
-ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, lineSize, alphaLine, x_lab) {
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
+#' # An ParallelPlot of all rows
+#' ParallelPlot(iris.x, seq(1,nrow(iris.x),1), Species, "Species", 1, 0.5, TRUE)
+ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariableName, lineSize, alphaLine, x_lab) {
   if (missing(data)) {
     stop("Need to specify data!")
   }
@@ -230,6 +234,12 @@ ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, l
     stop("Need to specify rows!")
   }
   if (class(rows) != "numeric") {
+    stop("rows must be a numeric class!")
+  }
+  if (missing(columns)) {
+    stop("Need to specify rows!")
+  }
+  if (class(columns) != "numeric") {
     stop("rows must be a numeric class!")
   }
   if (missing(dependentVariable)) {
@@ -265,7 +275,7 @@ ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, l
   
   #All parameters are OK!
   x_name = "Columns"
-  subData <- data[rows,]
+  subData <- data[rows,columns]
   dependentVariable <- dependentVariable[rows]
   rowsNum <- nrow(subData)
   x <- seq(from = 1, to = rowsNum, length.out = rowsNum)
