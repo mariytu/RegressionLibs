@@ -153,14 +153,27 @@ findMissingValues <- function (dataSet) {
 #' @param dataSet an object of class data frame with the original data set.
 #' @return an object of class data frame with a modified data set normalized 
 #' in range of 0 to 1.
+#' 
 #' @seealso scaleData, normalizeData
+#' 
 #' @examples
-#' iris.x <- iris[,1:4]
-#' normedIris <- as.data.frame(lapply(iris.x, normalize)) #In range [0,1]
+#' #Example 1
+#' iris.x <- iris[,1:4] #Just numerical columns witout missing values
+#' normedIris <- as.data.frame(lapply(iris.x, normalize)) # In range [0,1]
+#' 
+#' 
+#' #Example 2
+#' # Getting a data set without missing values
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' 
+#' normedCars <- as.data.frame(lapply(cars, normalize)) # In range [0,1]
 normalize <- function(dataSet){
   
   if (missing(dataSet)) {
     stop("Need to specify dataSet!")
+  }
+  if (class(dataSet) != "data.frame") {
+    stop("dataSet must be a data frame class!")
   }
   
   #All parameters are OK!
@@ -175,23 +188,45 @@ normalize <- function(dataSet){
 #' @param dataSet an object of class data frame with the original data set.
 #' @param min an integer with the min value that you want scale the data set.
 #' @param max an integer with the max value that you want scale the data set.
+#' 
 #' @return an object of class data frame with a modified data set scaled 
 #' in the defined range.
+#' 
 #' @seealso normalize, normalizeData
+#' 
 #' @examples
-#' iris.x <- iris[,1:4]
+#' #Example 1
+#' iris.x <- iris[,1:4] #Just numerical columns witout missing values
+#' 
 #' normed <- as.data.frame(lapply(iris.x, normalize))
-#' normedIris <- as.data.frame(lapply(normed, 1, 10, scaleData)) #In range [1,10]
+#' normedIris <- as.data.frame(lapply(normed, scaleData, 1, 10)) #In range [1,10]
+#' 
+#' 
+#' #Example 2
+#' # Getting a data set without missing values
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' 
+#' normed <- as.data.frame(lapply(cars, normalize))
+#' normedCars <- as.data.frame(lapply(normed, scaleData, 1, 10)) #In range [1,10]
 scaleData <- function(dataSet, min, max){
   
   if (missing(dataSet)) {
     stop("Need to specify dataSet!")
   }
+  if (class(dataSet) != "data.frame") {
+    stop("dataSet must be a data frame class!")
+  }
   if (missing(min)) {
     stop("Need to specify min!")
   }
+  if (!(class(min) == "numeric" || class(min) == "integer")) {
+    stop("min must be a numeric or integer class!")
+  }
   if (missing(max)) {
     stop("Need to specify max!")
+  }
+  if (!(class(max) == "numeric" || class(max) == "integer")) {
+    stop("max must be a numeric or integer class!")
   }
   if (min >= max) {
     stop("Min must be less strict than max!")
@@ -211,9 +246,12 @@ scaleData <- function(dataSet, min, max){
 #' want normalize.
 #' @param min an integer with the min value that you want normalize the data set.
 #' @param max an integer with the max value that you want normalize the data set.
+#' 
 #' @return an object of class data frame with a modified data set normalized 
 #' in the defined range.
+#' 
 #' @seealso normalize, scaleData
+#' 
 #' @examples
 #' iris.x <- iris[,1:4]
 #' normedIris <- normalizeData(iris) #In range [0,1]
@@ -223,14 +261,32 @@ normalizeData<- function(dataSet, min, max){
   if (missing(dataSet)) {
     stop("Need to specify dataSet!")
   }
+  if (class(dataSet) != "data.frame") {
+    stop("dataSet must be a data frame class!")
+  }
+  if (missing(min)) {
+    stop("Need to specify min!")
+  }
+  if (!(class(min) == "numeric" || class(min) == "integer")) {
+    stop("min must be a numeric or integer class!")
+  }
+  if (missing(max)) {
+    stop("Need to specify max!")
+  }
+  if (!(class(max) == "numeric" || class(max) == "integer")) {
+    stop("max must be a numeric or integer class!")
+  }
+  if (min >= max) {
+    stop("Min must be less strict than max!")
+  }
   
   #All parameters are OK!
   try(
-    if (!missing("x")) {
+    if (!missing("min")) {
       try(
-        if (!missing("y")) {
+        if (!missing("max")) {
           normed <- as.data.frame(lapply(dataSet, normalize))
-          as.data.frame(lapply(normed, min, max, scaleData))
+          as.data.frame(lapply(normed, scaleData, min, max))
         }, silent = TRUE)
     }, silent = TRUE)
   
@@ -314,9 +370,13 @@ makePairs <- function(dataSet){
 #' 
 #' @param colors a list of name colors.
 #' @param values an object of class data frame with a dependent variable.
+#' 
 #' @return a list colors in HEX format.
+#' 
 #' @seealso PlotPC3D
+#' 
 #' @source http://stackoverflow.com/questions/10413678/how-to-assign-color-scale-to-a-variable-in-a-3d-scatter-plot
+#' 
 #' @examples
 #' iris.y <- iris[,4]
 #' cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), iris.y)
