@@ -571,8 +571,7 @@ plotPC <- function(data, DependentVariable, x_axis, y_axis, dependentVariableNam
   }
   
   #All parameters are OK!
-  subData <- as.data.frame(data[,x_axis], data[,y_axis])
-  subData <- as.data.frame(subData, DependentVariable)
+  subData <- data.frame(data[,x_axis], data[,y_axis], DependentVariable)
   x_axis <- colnames(subData)[1]
   y_axis <- colnames(subData)[2]
   names(subData) <- c(x_axis, y_axis, "DependentVariable")
