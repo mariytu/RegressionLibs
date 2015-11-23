@@ -7,28 +7,57 @@
 #' regression.
 #' @return a data frame object with origin values, fitted values, and differents 
 #' error types for make some diagnostics plots.
-#' @seealso ResidualsFitted, StResidualsFitted, NormalQQ, StResidualsLeverange
-#' @examples
-#' iris.x <- iris[,1:3]
-#' Petal.Width <- iris[,4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-#' PCA <- as.data.frame(ir.pca$x)
 #' 
+#' @seealso ResidualsFitted, StResidualsFitted, NormalQQ, StResidualsLeverange
+#' 
+#' @examples
+#' #Example 1
+#' iris.x <- iris[,1:3] # These are the independent variables
+#' Petal.Width <- iris[,4] # This is the dependent variable
+#' 
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) # Performing prcomp
+#' 
+#' PCA <- as.data.frame(ir.pca$x)
 #' PC1 <- PCA[,1]
 #' PC2 <- PCA[,2]
 #' PC3 <- PCA[,3]
 #' 
-#' fit <- lm(Petal.Width ~ PC1 + PC2 + PC3, data = PCA)
-#' diagnostic <- diagnosticData(fit)
+#' fit <- lm(Petal.Width ~ PC1 + PC2 + PC3, data = PCA) # Perfoming linear regression
+#' 
+#' diagnostic <- diagnosticData(fit) # Generating data for differents plots
+#' ResidualsFitted(diagnostic, "Petal Width") # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Petal Width") #Generating Standarized Residuals v/s Fitted Values plot
+#' NormalQQ(diagnostic, "Petal Width") # Generating Normal-QQ plot
+#' StResidualsLeverange(diagnostic, "Petal Width") # Generating Leverange v/s Standarized Residuals plot
+#' 
+#' 
+#' #Example 2
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE)
+#' 
+#' PCA <- as.data.frame(cars.pca$x)
+#' PC1 <- PCA[,1]
+#' PC2 <- PCA[,2]
+#' PC3 <- PCA[,3]
+#' 
+#' fit <- lm(cars.y ~ PC1 + PC2 + PC3, data = PCA) # Perfoming linear regression
+#' 
+#' diagnostic <- diagnosticData(fit) # Generating data for differents plots
+#' ResidualsFitted(diagnostic, "Price") # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Price") #Generating Standarized Residuals v/s Fitted Values plot
+#' NormalQQ(diagnostic, "Price") # Generating Normal-QQ plot
+#' StResidualsLeverange(diagnostic, "Price") # Generating Leverange v/s Standarized Residuals plot
 diagnosticData <- function(fit) {
   
   if (missing(fit)) {
     stop("Need to specify fit!")
   }
-  else {
-    if (!('model' %in% names(fit))) {
-      stop("fit must be a closure type")
-    }
+  if (class(fit) != "fit") {
+    stop("fit must be a fit class!")
   }
   
   dependentVariableName <- "Dependent Variable"
