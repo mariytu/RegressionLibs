@@ -160,7 +160,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   else {
     p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
       facet_grid(xvar ~ yvar, scales = "free") + 
-      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = 0.5, size = pointSize) + 
+      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
       stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
                    data = gg1$densities, position = "identity", 
                    colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
