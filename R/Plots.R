@@ -7,12 +7,28 @@
 #' calculated.
 #' @seealso CalculateVariance, plotPC
 #' @examples
-#' iris.x <- iris[,1:4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' # We know that there are no missing values in the data set
 #' 
+#' # performing prcomp
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) 
+#' 
+#' # Generating elbow plot to detect the most important principal components
 #' elbowPlot(ir.pca)
 #' 
 #' 
+#' #Example 2
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' # Performing prcomp
+#' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE)
+#' 
+#' # Generating elbow plot to detect the most important principal components
+#' elbowPlot(autos.pca)
 elbowPlot <- function(data.pca) {
   
   if (missing(data.pca)) {
@@ -46,85 +62,25 @@ elbowPlot <- function(data.pca) {
   return (p)
 }
 
-#' Plot PCA (Plot)
-#'
-#' Generate a plot of 2 Principal Components using ggplot. You must indicate which 
-#' PC you want in the graph.
-#' 
-#' @param data.pca a list with class "prcomp" containing all principal components 
-#' calculated.
-#' @param dependentVariable is a list of values containig the dependent variable 
-#' of your regression model.
-#' @param x_axis an integer that represent the number of the principal component 
-#' that you want in your x axis.
-#' @param y_axis an integer that represent the number of the principal component 
-#' that you want in your y axis.
-#' @param dependentVariableName is an optional parameter. It's an string that
-#' contains de name of your dependent variable of your regression model.
-#' @seealso linePlot
-#' @examples
-#' iris.x <- iris[,1:3]
-#' Petal.Width <- iris[,4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-#' 
-#' plotPC(ir.pca, Petal.Width, 1, 2, "Petal Width")
-plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariableName) {
-  
-  if (missing("data.pca")) {
-    stop("Need to specify data.pca!")
-  }
-  if (missing("dependentVariable")) {
-    stop("Need to specify dependentVariable!")
-  }
-  if (missing("x_axis")) {
-    stop("Need to specify x_axis!")
-  }
-  if (missing("y_axis")) {
-    stop("Need to specify y_axis!")
-  }
-  if (missing("dependentVariableName")) {
-    dependentVariableName <- "Dependent Variable"
-  }
-  
-  #All parameters are OK!
-  PCs <- data.frame(data.pca$x[,x_axis], data.pca$x[,y_axis], dependentVariable)
-  x_axis <- paste(c("PC", x_axis), collapse = "")
-  y_axis <- paste(c("PC", y_axis), collapse = "")
-  names(PCs) <- c(x_axis, y_axis, "DependentVariable")
-  
-  p <- ggplot(PCs, aes_string(x = x_axis, y = y_axis)) + 
-    geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = 0.8, size = 2) + 
-    scale_color_gradientn(name = PCs$DependentVariable,
-                          colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
-    theme(panel.grid.minor = element_blank(), #remove gridlines
-          legend.position = "bottom" #legend at the bottom
-    )#end theme
-  
-  return (p)
-}
-
 #' Scatterplot Matrix (Plot)
 #'
-#' Generate a Scatterplot Matrix between a range using ggplot.
+#' Generate a Scatterplot Matrix of some columns of data set using ggplot.
 #' 
-#' @param data.pca a list with class "prcomp" containing all principal components 
-#' calculated.
-#' @param from an integer that represent the first principal component that you 
-#' want in the scatterplot matrix.
-#' @param to an integer that represent the last principal component that you 
-#' want in the scatterplot matrix.
+#' @param data an object of class "data.frame" containing just numerical columns.
+#' @param columns an object of class "numeric" containing the list of columns
+#' that you want in your scatterplot.
 #' @param dependentVariable is a list of values containig the dependent variable 
 #' of your regression model.
 #' @param dependentVariableName is an optional parameter. It's an string that
-#' contains de name of your dependent variable of your regression model.
+#' contains de name of your dependent variable.
 #' @seealso makePairs
 #' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 #' @examples
 #' iris.x <- iris[,1:3]
+#' columns <- c(1,2,3)
 #' Petal.Width <- iris[,4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' ScatterplotMatrix(iris.x, columns, Petal.Width, "Petal Width")
 #' 
-#' ScatterplotMatrix(ir.pca, 1, 3, Petal.Width, "Petal Width")
 ScatterplotMatrix<- function(data.pca, from, to, dependentVariable, dependentVariableName){
   
   if (missing(data.pca)) {
@@ -334,4 +290,61 @@ PlotPC3D<- function(data.pca, from, to, dependentVariable){
   
   cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), dependentVariable)
   plot3d(x = PC1, y = PC2, z = PC3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
+}
+
+#' Plot PCA (Plot)
+#'
+#' Generate a plot of 2 Principal Components using ggplot. You must indicate which 
+#' PC you want in the graph.
+#' 
+#' @param data.pca a list with class "prcomp" containing all principal components 
+#' calculated.
+#' @param dependentVariable is a list of values containig the dependent variable 
+#' of your regression model.
+#' @param x_axis an integer that represent the number of the principal component 
+#' that you want in your x axis.
+#' @param y_axis an integer that represent the number of the principal component 
+#' that you want in your y axis.
+#' @param dependentVariableName is an optional parameter. It's an string that
+#' contains de name of your dependent variable of your regression model.
+#' @seealso linePlot
+#' @examples
+#' iris.x <- iris[,1:3]
+#' Petal.Width <- iris[,4]
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
+#' 
+#' plotPC(ir.pca, Petal.Width, 1, 2, "Petal Width")
+plotPC <- function(data.pca, dependentVariable, x_axis, y_axis, dependentVariableName) {
+  
+  if (missing("data.pca")) {
+    stop("Need to specify data.pca!")
+  }
+  if (missing("dependentVariable")) {
+    stop("Need to specify dependentVariable!")
+  }
+  if (missing("x_axis")) {
+    stop("Need to specify x_axis!")
+  }
+  if (missing("y_axis")) {
+    stop("Need to specify y_axis!")
+  }
+  if (missing("dependentVariableName")) {
+    dependentVariableName <- "Dependent Variable"
+  }
+  
+  #All parameters are OK!
+  PCs <- data.frame(data.pca$x[,x_axis], data.pca$x[,y_axis], dependentVariable)
+  x_axis <- paste(c("PC", x_axis), collapse = "")
+  y_axis <- paste(c("PC", y_axis), collapse = "")
+  names(PCs) <- c(x_axis, y_axis, "DependentVariable")
+  
+  p <- ggplot(PCs, aes_string(x = x_axis, y = y_axis)) + 
+    geom_point(aes(colour = dependentVariable), na.rm = TRUE, alpha = 0.8, size = 2) + 
+    scale_color_gradientn(name = PCs$DependentVariable,
+                          colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+    theme(panel.grid.minor = element_blank(), #remove gridlines
+          legend.position = "bottom" #legend at the bottom
+    )#end theme
+  
+  return (p)
 }

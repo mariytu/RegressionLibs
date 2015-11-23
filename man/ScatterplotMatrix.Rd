@@ -10,30 +10,25 @@ https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 ScatterplotMatrix(data.pca, from, to, dependentVariable, dependentVariableName)
 }
 \arguments{
-\item{data.pca}{a list with class "prcomp" containing all principal components
-calculated.}
-
-\item{from}{an integer that represent the first principal component that you
-want in the scatterplot matrix.}
-
-\item{to}{an integer that represent the last principal component that you
-want in the scatterplot matrix.}
-
 \item{dependentVariable}{is a list of values containig the dependent variable
 of your regression model.}
 
 \item{dependentVariableName}{is an optional parameter. It's an string that
-contains de name of your dependent variable of your regression model.}
+contains de name of your dependent variable.}
+
+\item{data}{an object of class "data.frame" containing just numerical columns.}
+
+\item{columns}{an object of class "numeric" containing the list of columns
+that you want in your scatterplot.}
 }
 \description{
-Generate a Scatterplot Matrix between a range using ggplot.
+Generate a Scatterplot Matrix of some columns of data set using ggplot.
 }
 \examples{
 iris.x <- iris[,1:3]
+columns <- c(1,2,3)
 Petal.Width <- iris[,4]
-ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-
-ScatterplotMatrix(ir.pca, 1, 3, Petal.Width, "Petal Width")
+ScatterplotMatrix(iris.x, columns, Petal.Width, "Petal Width")
 }
 \seealso{
 makePairs
