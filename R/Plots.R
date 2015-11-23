@@ -102,7 +102,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   if (missing(columns)) {
     stop("Need to specify columns!")
   }
-  if (class(columns) == "numeric") {
+  if (class(columns) != "numeric") {
     stop("columns must be a numeric class!")
   }
   if (missing(dependentVariable)) {
