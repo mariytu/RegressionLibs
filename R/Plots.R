@@ -460,7 +460,7 @@ PlotPC3D<- function(data, columns, dependentVariable){
   }
   else {
     cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), as.numeric(dependentVariable))
-    plot3d(x = col1, y = col2, z = col3, col = dependentVariable, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
+    plot3d(x = col1, y = col2, z = col3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
   }
 }
 
