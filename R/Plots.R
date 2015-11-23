@@ -206,6 +206,10 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' a list of values containig the dependent variable.
 #' @param dependentVariableName is an optional parameter. It's an string that
 #' contains the name of your dependent variable.
+#' @param lineSize is an optional parameter of class numeric with a single value 
+#' that represent the line size of plot.
+#' @param alphaLine is an optional parameter of class numeric with a single value 
+#' that represent the alpha of lines in the plot.
 #' @param x_lab a boolean that represent if you want or not the x axis scale. In 
 #' some cases, when you have many columns the plot could be ugly! The default value 
 #' is False.
@@ -215,7 +219,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' dependetVariable <- iris[,5]
 #' ParallelPlot(iris.x, dependetVariable, "Species")
 #' ParallelPlot(iris.x, dependetVariable, "Species", x_lab = TRUE)
-ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, x_lab) {
+ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, lineSize, alphaLine, x_lab) {
   if (missing(data)) {
     stop("Need to specify data!")
   }
@@ -240,6 +244,18 @@ ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, x
   if (class(dependentVariableName) != "character") {
     stop("dependentVariableName must be a character class!")
   }
+  if (missing(lineSize)) {
+    lineSize <- 1
+  }
+  if (class(lineSize) != "numeric") {
+    stop("lineSize must be a numeric class!")
+  }
+  if (missing(alphaLine)) {
+    alphaLine <- 0.9
+  }
+  if (class(alphaLine) != "numeric") {
+    stop("alphaLine must be a numeric class!")
+  }
   if (missing(x_lab)) {
     x_lab = FALSE
   }
@@ -260,14 +276,14 @@ ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, x
   if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
     if (x_lab) {
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
-        geom_line(size = 1) +
+        geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_gradientn(name = dependentVariableName,
                               colours = c("darkred", "yellow", "darkgreen")) +
         xlab(x_name) + ylab("Values")
     }
     else {
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
-        geom_line(size = 1) +
+        geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_gradientn(name = dependentVariableName,
                               colours = c("darkred", "yellow", "darkgreen")) +
         scale_x_discrete(breaks = c()) +
@@ -277,13 +293,13 @@ ParallelPlot <- function(data, rows, dependentVariable, dependentVariableName, x
   else {
     if (x_lab) {
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
-        geom_line(size = 1) +
+        geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_discrete(name = dependentVariableName) +
         xlab(x_name) + ylab("Values")
     }
     else {
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
-        geom_line(size = 1) +
+        geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_discrete(name = dependentVariableName) +
         scale_x_discrete(breaks = c()) +
         xlab(x_name) + ylab("Values")
