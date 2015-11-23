@@ -454,8 +454,13 @@ PlotPC3D<- function(data, columns, dependentVariable){
   y_lab <- colnames(subData)[2]
   z_lab <- colnames(subData)[3]
   
-  cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), dependentVariable)
-  plot3d(x = col1, y = col2, z = col3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
+  if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+    cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), dependentVariable)
+    plot3d(x = col1, y = col2, z = col3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
+  }
+  else {
+    plot3d(x = col1, y = col2, z = col3, col = dependentVariable, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
+  }
 }
 
 #' Plot PCA (Plot)
