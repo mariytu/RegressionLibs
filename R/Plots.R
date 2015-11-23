@@ -251,16 +251,16 @@ ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariab
     stop("rows must be a numeric class!")
   }
   if (missing(columns)) {
-    stop("Need to specify rows!")
+    stop("Need to specify columns!")
   }
   if (class(columns) != "numeric") {
-    stop("rows must be a numeric class!")
+    stop("columns must be a numeric class!")
   }
   if (missing(dependentVariable)) {
     stop("Need to specify dependentVariable!")
   }
   if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor" || class(dependentVariable) == "integer")) {
-    stop("dependentVariable must be a numeric or factor class!")
+    stop("dependentVariable must be a numeric, factor or integer class!")
   }
   if (missing(dependentVariableName)) {
     dependentVariableName <- "Dependent Variable"
@@ -407,33 +407,55 @@ DensityPlot <- function(data, col) {
 
 #' Plot PC 3D (3DPlot)
 #'
-#' Generate a 3D plot for a range of principal components.
+#' Generate a 3D plot Generates a 3D graphic for a set of 3 columns of the data set.
 #' 
-#' @param data.pca a list with class "prcomp" containing all principal components 
-#' calculated.
-#' @param from an integer that represent the first principal component that you 
-#' want in the plot.
-#' @param to an integer that represent the last principal component that you 
-#' want in the plot.
-#' @param dependentVariable is a list of values containig the dependent variable 
-#' of your regression model.
+#' @param data an object of class data frame with the data.
+#' @param columns an object of class "numeric" containing the list of columns
+#' that you want in your parallel plot.
+#' @param dependentVariable an object of class "numeric", "factor" or "integer" is 
+#' a list of values containig the dependent variable.
+#' 
 #' @examples
 #' iris.x <- iris[,1:3]
 #' Petal.Width <- iris[,4]
 #' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
 #' PlotPC3D(ir.pca, 1, 3, Petal.Width)
-PlotPC3D<- function(data.pca, from, to, dependentVariable){
-  PCAfromTO<-as.data.frame(data.pca$x[,from:to])
+PlotPC3D<- function(data, columns, dependentVariable){
   
-  PC1 <- PCAfromTO[,1]
-  PC2 <- PCAfromTO[,2]
-  PC3 <- PCAfromTO[,3]
-  x_lab <- paste(c("PC", from), collapse = "")
-  y_lab <- paste(c("PC", (from+1)), collapse = "")
-  z_lab <- paste(c("PC", to), collapse = "")
+  if (missing(data)) {
+    stop("Need to specify data!")
+  }
+  if (class(data) != "data.frame") {
+    stop("data must be a data.frame class!")
+  }
+  if (missing(columns)) {
+    stop("Need to specify columns!")
+  }
+  if (class(columns) != "numeric") {
+    stop("columns must be a numeric class!")
+  }
+  if (length(columns) != 3) {
+    stop("The number of selected columns must be 3!")
+  }
+  if (missing(dependentVariable)) {
+    stop("Need to specify dependentVariable!")
+  }
+  if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor" || class(dependentVariable) == "integer")) {
+    stop("dependentVariable must be a numeric, factor or integer class!")
+  }
+  
+  #All parameters are OK!
+  subData<-data[,columns]
+  
+  Col1 <- subData[,1]
+  col2 <- subData[,2]
+  col3 <- subData[,3]
+  x_lab <- colnames(subData)[1]
+  y_lab <- colnames(subData)[2]
+  z_lab <- colnames(subData)[3]
   
   cols <- myColorRamp(c("darkred", "yellow", "darkgreen"), dependentVariable)
-  plot3d(x = PC1, y = PC2, z = PC3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
+  plot3d(x = col1, y = col2, z = col3, col = cols, size = "4", xlab = x_lab, ylab = y_lab, zlab = z_lab)
 }
 
 #' Plot PCA (Plot)
