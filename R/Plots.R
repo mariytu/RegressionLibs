@@ -416,10 +416,44 @@ DensityPlot <- function(data, col) {
 #' a list of values containig the dependent variable.
 #' 
 #' @examples
-#' iris.x <- iris[,1:3]
-#' Petal.Width <- iris[,4]
-#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-#' PlotPC3D(ir.pca, 1, 3, Petal.Width)
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
+#' # 3D Plot of 3 first columns of data set
+#' PlotPC3D(iris.x, c(1,2,3), Species)
+#' 
+#' 
+#' #Example 2
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
+#' 
+#' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) # performin prcomp
+#' 
+#' # 3D Plot of 3 first columns of data set
+#' PlotPC3D(as.data.frame(ir.pca$x), c(1,2,3), Species)
+#' 
+#' 
+#' #Example 3
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' # 3D Plot of 3 first columns of data set
+#' PlotPC3D(cars.x, c(1,2,3), cars.y)
+#' 
+#' 
+#' #Example 4
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE) # performin prcomp
+#' 
+#' # 3D Plot of 3 first columns of data set
+#' PlotPC3D(as.data.frame(cars.pca$x), c(1,2,3), cars.y)
 PlotPC3D<- function(data, columns, dependentVariable){
   
   if (missing(data)) {

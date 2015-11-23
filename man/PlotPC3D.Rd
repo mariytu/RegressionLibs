@@ -4,28 +4,58 @@
 \alias{PlotPC3D}
 \title{Plot PC 3D (3DPlot)}
 \usage{
-PlotPC3D(data.pca, from, to, dependentVariable)
+PlotPC3D(data, columns, dependentVariable)
 }
 \arguments{
-\item{data.pca}{a list with class "prcomp" containing all principal components
-calculated.}
+\item{data}{an object of class data frame with the data.}
 
-\item{from}{an integer that represent the first principal component that you
-want in the plot.}
+\item{columns}{an object of class "numeric" containing the list of columns
+that you want in your parallel plot.}
 
-\item{to}{an integer that represent the last principal component that you
-want in the plot.}
-
-\item{dependentVariable}{is a list of values containig the dependent variable
-of your regression model.}
+\item{dependentVariable}{an object of class "numeric", "factor" or "integer" is
+a list of values containig the dependent variable.}
 }
 \description{
-Generate a 3D plot for a range of principal components.
+Generate a 3D plot Generates a 3D graphic for a set of 3 columns of the data set.
 }
 \examples{
-iris.x <- iris[,1:3]
-Petal.Width <- iris[,4]
-ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
-PlotPC3D(ir.pca, 1, 3, Petal.Width)
+#Example 1
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
+# 3D Plot of 3 first columns of data set
+PlotPC3D(iris.x, c(1,2,3), Species)
+
+
+#Example 2
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
+ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) # performin prcomp
+
+# 3D Plot of 3 first columns of data set
+PlotPC3D(as.data.frame(ir.pca$x), c(1,2,3), Species)
+
+
+#Example 3
+# Getting a clean data set (without missing values)
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+cars.x <- cars[,1:16] # These are the independent variables
+cars.y <- cars[,17] # This is the dependent variable
+
+# 3D Plot of 3 first columns of data set
+PlotPC3D(cars.x, c(1,2,3), cars.y)
+
+
+#Example 4
+# Getting a clean data set (without missing values)
+cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+cars.x <- cars[,1:16] # These are the independent variables
+cars.y <- cars[,17] # This is the dependent variable
+
+cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE) # performin prcomp
+
+# 3D Plot of 3 first columns of data set
+PlotPC3D(as.data.frame(cars.pca$x), c(1,2,3), cars.y)
 }
 
