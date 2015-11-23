@@ -22,13 +22,12 @@
 #' # Getting a clean data set (without missing values)
 #' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
 #' cars.x <- cars[,1:16] # These are the independent variables
-#' cars.y <- cars[,17] # This is the dependent variable
 #' 
 #' # Performing prcomp
 #' cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE)
 #' 
 #' # Generating elbow plot to detect the most important principal components
-#' elbowPlot(autos.pca)
+#' elbowPlot(cars.pca)
 elbowPlot <- function(data.pca) {
   
   if (missing(data.pca)) {
@@ -69,60 +68,101 @@ elbowPlot <- function(data.pca) {
 #' @param data an object of class "data.frame" containing just numerical columns.
 #' @param columns an object of class "numeric" containing the list of columns
 #' that you want in your scatterplot.
-#' @param dependentVariable is a list of values containig the dependent variable 
-#' of your regression model.
+#' @param dependentVariable an object of class "numeric" or "factor" is a list of 
+#' values containig the dependent variable.
 #' @param dependentVariableName is an optional parameter. It's an string that
 #' contains de name of your dependent variable.
+#' @param pointSize a variable of class numeric with a single value that represent
+#' the point size of plot.
 #' @seealso makePairs
 #' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 #' @examples
-#' iris.x <- iris[,1:3]
-#' columns <- c(1,2,3)
-#' Petal.Width <- iris[,4]
-#' ScatterplotMatrix(iris.x, columns, Petal.Width, "Petal Width")
+#' #Example 1
+#' iris.x <- iris[,1:4] # These are the independent variables
+#' Species <- iris[,5] # This is the dependent variable
 #' 
-ScatterplotMatrix<- function(data.pca, from, to, dependentVariable, dependentVariableName){
+#' # An Scatterplot of all columns
+#' ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
+#' # An Scatterplot of somes columns and different point size
+#' ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 1.2)
+#' 
+#' 
+#' #Example 2
+#' 
+#' 
+#' 
+ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariableName, pointSize){
   
-  if (missing(data.pca)) {
-    stop("Need to specify data.pca!")
+  if (missing(data)) {
+    stop("Need to specify data!")
+  }
+  if (class(data) != "data.frame") {
+    stop("data must be a data.frame class!")
+  }
+  if (missing(columns)) {
+    stop("Need to specify columns!")
+  }
+  if (class(columns) == "numeric") {
+    stop("columns must be a numeric class!")
   }
   if (missing(dependentVariable)) {
     stop("Need to specify dependentVariable!")
   }
-  if (missing(from) || missing(to)) {
-    from <- 1
-    to <- 3
-    if (ncol(data.pca$x) > to) {
-      to <- ncol(data.pca$x)
-    }
+  if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor")) {
+    stop("dependentVariable must be a numeric or factor class!")
   }
   if (missing(dependentVariableName)) {
     dependentVariableName <- "Dependent Variable"
   }
+  if (class(dependentVariableName) != "character") {
+    stop("dependentVariableName must be a character class!")
+  }
+  if (missing(pointSize)) {
+    pointSize <- 1
+  }
+  if (class(pointSize) != "numeric") {
+    stop("pointSize must be a numeric class!")
+  }
   
   #All parameters are OK!
   # expand data frame for pairs plot
-  PCAfromTo <- as.data.frame(data.pca$x[,from:to])
-  gg1 <- makePairs(PCAfromTo)
+  subData <- as.data.frame(data[,columns])
+  gg1 <- makePairs(subData)
   
-  #New data frame mega PCA from..to
-  mega_PCA <- data.frame(gg1$all, DependentVariable = rep(dependentVariable, length = nrow(gg1$all)))
+  #New data frame mega Data from..to
+  mega_Data <- data.frame(gg1$all, DependentVariable = rep(dependentVariable, length = nrow(gg1$all)))
   DependentVariable <- rep(dependentVariable, length = nrow(gg1$all))
   
   # pairs plot
-  p <- ggplot(mega_PCA, aes_string(x = "x", y = "y")) + 
-    facet_grid(xvar ~ yvar, scales = "free") + 
-    geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = 0.5, size = 1) + 
-    stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
-                 data = gg1$densities, position = "identity", 
-                 colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
-    scale_color_gradientn(name = dependentVariableName,
-                          colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
-    theme(panel.grid.minor = element_blank(), #remove gridlines
-          legend.position = "bottom", #legend at the bottom
-          axis.title.x = element_blank(), #remove x label
-          axis.title.y = element_blank()  #remove y label
-    )#end theme
+  if (class(dependentVariable)=="numeric") {
+    p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
+      facet_grid(xvar ~ yvar, scales = "free") + 
+      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = 0.5, size = pointSize) + 
+      stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
+                   data = gg1$densities, position = "identity", 
+                   colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
+      scale_color_gradientn(name = dependentVariableName,
+                            colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+      theme(panel.grid.minor = element_blank(), #remove gridlines
+            legend.position = "bottom", #legend at the bottom
+            axis.title.x = element_blank(), #remove x label
+            axis.title.y = element_blank()  #remove y label
+      )#end theme
+  }
+  else {
+    p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
+      facet_grid(xvar ~ yvar, scales = "free") + 
+      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = 0.5, size = pointSize) + 
+      stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
+                   data = gg1$densities, position = "identity", 
+                   colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
+      scale_color_discrete(name = dependentVariableName) +
+      theme(panel.grid.minor = element_blank(), #remove gridlines
+            legend.position = "bottom", #legend at the bottom
+            axis.title.x = element_blank(), #remove x label
+            axis.title.y = element_blank()  #remove y label
+      )#end theme
+  }
   
   return (p)
 }

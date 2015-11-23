@@ -7,28 +7,39 @@
 https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 }
 \usage{
-ScatterplotMatrix(data.pca, from, to, dependentVariable, dependentVariableName)
+ScatterplotMatrix(data, columns, dependentVariable, dependentVariableName,
+  pointSize)
 }
 \arguments{
-\item{dependentVariable}{is a list of values containig the dependent variable
-of your regression model.}
-
-\item{dependentVariableName}{is an optional parameter. It's an string that
-contains de name of your dependent variable.}
-
 \item{data}{an object of class "data.frame" containing just numerical columns.}
 
 \item{columns}{an object of class "numeric" containing the list of columns
 that you want in your scatterplot.}
+
+\item{dependentVariable}{an object of class "numeric" or "factor" is a list of
+values containig the dependent variable.}
+
+\item{dependentVariableName}{is an optional parameter. It's an string that
+contains de name of your dependent variable.}
+
+\item{pointSize}{a variable of class numeric with a single value that represent
+the point size of plot.}
 }
 \description{
 Generate a Scatterplot Matrix of some columns of data set using ggplot.
 }
 \examples{
-iris.x <- iris[,1:3]
-columns <- c(1,2,3)
-Petal.Width <- iris[,4]
-ScatterplotMatrix(iris.x, columns, Petal.Width, "Petal Width")
+#Example 1
+iris.x <- iris[,1:4] # These are the independent variables
+Species <- iris[,5] # This is the dependent variable
+
+# An Scatterplot of all columns
+ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
+# An Scatterplot of somes columns and different point size
+ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 1.2)
+
+
+#Example 2
 }
 \seealso{
 makePairs

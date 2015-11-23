@@ -30,13 +30,12 @@ elbowPlot(ir.pca)
 # Getting a clean data set (without missing values)
 cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
 cars.x <- cars[,1:16] # These are the independent variables
-cars.y <- cars[,17] # This is the dependent variable
 
 # Performing prcomp
 cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE)
 
 # Generating elbow plot to detect the most important principal components
-elbowPlot(autos.pca)
+elbowPlot(cars.pca)
 }
 \seealso{
 CalculateVariance, plotPC
