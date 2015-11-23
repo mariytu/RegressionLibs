@@ -1,4 +1,4 @@
-#' LinePlot for PCA (Plot)
+#' Elbow Plot for PCA (Plot)
 #'
 #' Generate a plot of 10 first variances of Principal Components. This is useful to 
 #' determinate which are the most important components.
@@ -10,11 +10,16 @@
 #' iris.x <- iris[,1:4]
 #' ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE)
 #' 
-#' linePlot(ir.pca)
-linePlot <- function(data.pca) {
+#' elbowPlot(ir.pca)
+#' 
+#' 
+elbowPlot <- function(data.pca) {
   
   if (missing(data.pca)) {
     stop("Need to specify data.pca!")
+  }
+  if (class(data.pca) != "prcomp") {
+    stop("data.pca must be a prcomp class!")
   }
   
   #All parameters are OK!
