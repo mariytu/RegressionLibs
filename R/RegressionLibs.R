@@ -273,7 +273,7 @@ normalizeData<- function(dataSet, min, max){
   
   #All parameters are OK!
   normed <- as.data.frame(lapply(dataSet, normalize))
-  normed <- as.data.frame(lapply(normed, scaleData, 1, 10)) #In range [1,10]
+  normed <- as.data.frame(lapply(normed, scaleData, min, max)) #In range [1,10]
   
   return (normed)
 }
