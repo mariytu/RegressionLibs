@@ -265,13 +265,13 @@ normalizeData<- function(dataSet, min, max){
     stop("dataSet must be a data frame class!")
   }
   if (missing(min)) {
-    stop("Need to specify min!")
+    min <- 0
   }
   if (!(class(min) == "numeric" || class(min) == "integer")) {
     stop("min must be a numeric or integer class!")
   }
   if (missing(max)) {
-    stop("Need to specify max!")
+    max <- 1
   }
   if (!(class(max) == "numeric" || class(max) == "integer")) {
     stop("max must be a numeric or integer class!")
