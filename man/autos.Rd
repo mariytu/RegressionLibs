@@ -30,6 +30,12 @@
 data(autos)
 }
 \description{
+Data from Machine Learning Repository, UCI. This data set just containg a
+numerical columns of original data set obtained from the repository. The last
+column (price) is the dependent variable, and the first sixteen columns are the
+independents variables. This data set, is useful for regression problems.
+}
+\details{
 Attribute Information:
     Attribute:                Attribute Range:
 ------------------    --------------------------------------
@@ -52,12 +58,6 @@ Attribute Information:
 15. city-mpg:           continuous from 13 to 49
 16. highway-mpg:        continuous from 16 to 54
 17. price:              continuous from 5118 to 45400
-}
-\details{
-Data from Machine Learning Repository, UCI. This data set just containg a
-numerical columns of original data set obtained from the repository. The last
-column (price) is the dependent variable, and the first sixteen columns are the
-independents variables. This data set, is useful for regression problems.
 }
 \examples{
 data(autos)

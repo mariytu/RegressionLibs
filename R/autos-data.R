@@ -5,7 +5,7 @@
 #' column (price) is the dependent variable, and the first sixteen columns are the
 #' independents variables. This data set, is useful for regression problems.
 #' 
-#' @description
+#' @details
 #' Attribute Information:     
 #'     Attribute:                Attribute Range:
 #' ------------------    --------------------------------------
