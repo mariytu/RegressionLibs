@@ -8,7 +8,7 @@ https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 }
 \usage{
 ScatterplotMatrix(data, columns, dependentVariable, dependentVariableName,
-  pointSize)
+  pointSize, alphaPoint)
 }
 \arguments{
 \item{data}{an object of class "data.frame" containing just numerical columns.}
@@ -16,14 +16,17 @@ ScatterplotMatrix(data, columns, dependentVariable, dependentVariableName,
 \item{columns}{an object of class "numeric" containing the list of columns
 that you want in your scatterplot.}
 
-\item{dependentVariable}{an object of class "numeric" or "factor" is a list of
-values containig the dependent variable.}
+\item{dependentVariable}{an object of class "numeric", "factor" or "integer" is
+a list of values containig the dependent variable.}
 
 \item{dependentVariableName}{is an optional parameter. It's an string that
 contains de name of your dependent variable.}
 
-\item{pointSize}{a variable of class numeric with a single value that represent
-the point size of plot.}
+\item{pointSize}{is an optional parameter of class numeric with a single value
+that represent the point size of plot.}
+
+\item{alphaPoint}{is an optional parameter of class numeric with a single value
+that represent the alpha of points in the plot.}
 }
 \description{
 Generate a Scatterplot Matrix of some columns of data set using ggplot.
@@ -35,8 +38,8 @@ Species <- iris[,5] # This is the dependent variable
 
 # An Scatterplot of all columns
 ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
-# An Scatterplot of somes columns and different point size
-ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 1.2)
+# An Scatterplot of somes columns and different point size and alpha point
+ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
 
 
 #Example 2

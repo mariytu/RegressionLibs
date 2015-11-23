@@ -68,8 +68,8 @@ elbowPlot <- function(data.pca) {
 #' @param data an object of class "data.frame" containing just numerical columns.
 #' @param columns an object of class "numeric" containing the list of columns
 #' that you want in your scatterplot.
-#' @param dependentVariable an object of class "numeric" or "factor" is a list of 
-#' values containig the dependent variable.
+#' @param dependentVariable an object of class "numeric", "factor" or "integer" is 
+#' a list of values containig the dependent variable.
 #' @param dependentVariableName is an optional parameter. It's an string that
 #' contains de name of your dependent variable.
 #' @param pointSize is an optional parameter of class numeric with a single value 
@@ -85,8 +85,8 @@ elbowPlot <- function(data.pca) {
 #' 
 #' # An Scatterplot of all columns
 #' ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
-#' # An Scatterplot of somes columns and different point size
-#' ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 1.2)
+#' # An Scatterplot of somes columns and different point size and alpha point
+#' ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
 #' 
 #' 
 #' #Example 2
@@ -110,7 +110,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   if (missing(dependentVariable)) {
     stop("Need to specify dependentVariable!")
   }
-  if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor")) {
+  if (!(class(dependentVariable) == "numeric" || class(dependentVariable) == "factor" || class(dependentVariable) == "integer")) {
     stop("dependentVariable must be a numeric or factor class!")
   }
   if (missing(dependentVariableName)) {
