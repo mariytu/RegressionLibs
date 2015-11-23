@@ -281,16 +281,10 @@ normalizeData<- function(dataSet, min, max){
   }
   
   #All parameters are OK!
-  try(
-    if (!missing("min")) {
-      try(
-        if (!missing("max")) {
-          normed <- as.data.frame(lapply(dataSet, normalize))
-          as.data.frame(lapply(normed, scaleData, min, max))
-        }, silent = TRUE)
-    }, silent = TRUE)
+  normed <- as.data.frame(lapply(dataSet, normalize))
+  normed <- as.data.frame(lapply(normed, scaleData, 1, 10)) #In range [1,10]
   
-  as.data.frame(lapply(dataSet, normalize))
+  return (normed)
 }
 
 #' Calculate Variance Function
