@@ -288,7 +288,7 @@ ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariab
   }
   
   #All parameters are OK!
-  x_name = "Columns"
+  x_name = "Wavelength"
   subData <- data[rows,columns]
   dependentVariable <- dependentVariable[rows]
   rowsNum <- nrow(subData)
