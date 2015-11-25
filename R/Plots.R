@@ -537,7 +537,8 @@ Plot3D<- function(data, columns, dependentVariable){
 #' in your x axis.
 #' @param y_axis an integer that represent the number of the column that you want
 #' in your y axis.
-#' @param dependentVariableName is an optional parameter. It's an string that
+#' @
+#' param dependentVariableName is an optional parameter. It's an string that
 #' contains the name of your dependent variable.
 #' @param pointSize is an optional parameter of class numeric with a single value 
 #' that represent the point size of plot.
@@ -622,14 +623,14 @@ simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariabl
   
   #All parameters are OK!
   subData <- data.frame(data[,x_axis], data[,y_axis], DependentVariable)
-  x_axis <- colnames(subData)[1]
-  y_axis <- colnames(subData)[2]
+  x_axis <- colnames(data)[x_axis]
+  y_axis <- colnames(data)[y_axis]
   names(subData) <- c(x_axis, y_axis, "DependentVariable")
   
   if (class(DependentVariable) == "numeric" || class(DependentVariable) == "integer") {
     p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
       geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
-      scale_color_gradientn(name = subData$DependentVariable,
+      scale_color_gradientn(name = dependentVariableName,
                             colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom" #legend at the bottom
