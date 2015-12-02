@@ -123,8 +123,8 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   if (missing(columns)) {
     stop("Need to specify columns!")
   }
-  if (class(columns) != "numeric") {
-    stop("columns must be a numeric class!")
+  if (!(class(columns) == "numeric" || class(columns) == "integer")) {
+    stop("columns must be a numeric or integer class!")
   }
   if (missing(dependentVariable)) {
     stop("Need to specify dependentVariable!")
@@ -247,14 +247,14 @@ ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariab
   if (missing(rows)) {
     stop("Need to specify rows!")
   }
-  if (class(rows) != "numeric") {
-    stop("rows must be a numeric class!")
+  if (!(class(rows) == "numeric" || class(rows) == "integer")) {
+    stop("rows must be a numeric or integer class!")
   }
   if (missing(columns)) {
     stop("Need to specify columns!")
   }
-  if (class(columns) != "numeric") {
-    stop("columns must be a numeric class!")
+  if (!(class(columns) == "numeric" || class(columns) == "integer")) {
+    stop("columns must be a numeric or integer class!")
   }
   if (missing(dependentVariable)) {
     stop("Need to specify dependentVariable!")
@@ -492,8 +492,8 @@ Plot3D<- function(data, columns, dependentVariable){
   if (missing(columns)) {
     stop("Need to specify columns!")
   }
-  if (class(columns) != "numeric") {
-    stop("columns must be a numeric class!")
+  if (!(class(columns) == "numeric" || class(columns) == "integer")) {
+    stop("columns must be a numeric or integer class!")
   }
   if (length(columns) != 3) {
     stop("The number of selected columns must be 3!")
