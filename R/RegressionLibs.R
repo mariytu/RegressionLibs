@@ -438,6 +438,7 @@ statistics <- function(results, y) {
     
     RMSE <- sqrt(RMSE/length(group))
     R2 <- SSR/SST
+    RMSE <- cor(yFold, yNewFOld)^2
     
     statistics[nrow(statistics)+1,1] <- RMSE
     statistics[nrow(statistics),2] <- R2
