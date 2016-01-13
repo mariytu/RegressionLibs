@@ -432,3 +432,19 @@ statistics <- function(results, y) {
   
   return(statistics)
 }
+
+assignNameCol <- function(statistics) {
+  statistics[1,1] = "Overffited"
+  k <- 2
+  for (j in 1:10) {
+    statistics[k,1] <- paste("Fold",j)
+    k <- k + 1
+  }
+  statistics[12,1] = "Mean"
+  statistics[13,1] = "STDEV"
+  statistics[14,1] = "Cross-validated"
+  
+  names(statistics) <- c("Name","RMSE", "R2", "IA")
+  
+  return(statistics)
+}
