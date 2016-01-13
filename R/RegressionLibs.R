@@ -419,32 +419,15 @@ statistics <- function(results, y) {
   
   #All parameters are OK!
   statistics <- data.frame(RMSE=integer(), R2=integer(), IA=integer(), stringsAsFactors=FALSE)
+  
   for (j in 1:length(results$groups)) {
     group <- sapply(results$groups[j], function(x,i){as.numeric(x[i])})
     yFold <- y[group]
     yNewFold <- results$cv.fit[group]
     
-    yMean <- sum(yFold)/length(yFold)
-    
-    SST <- 0
-    SSR <- 0
-    RMSE <- 0
-    O <- yFold
-    E <- yNewFold
-    
-    for (k in 1:length(group)) {
-      RMSE <- (yFold[k] - yNewFold[k])^2 + RMSE
-      SST <- (yFold[k] - yMean)^2 + SST
-      SSR <- (yNewFold[k] - yMean)^2 + SSR
-    }
-    
-    RMSE <- sqrt(RMSE/length(group))
-    R2 <- SSR/SST
-    IA <- 1 - (sum(E-O)^2) / sum((abs(E-yMean) + abs(O-yMean))^2)
-    
-    statistics[nrow(statistics)+1,1] <- RMSE
-    statistics[nrow(statistics),2] <- R2
-    statistics[nrow(statistics),3] <- IA
+    statistics[nrow(statistics)+1,1] <- rmse(yNewFold, yFold) #RMSE
+    statistics[nrow(statistics),2] <- cor(yNewFold, yFold)^2 #R2
+    statistics[nrow(statistics),3] <- d(yNewFold, yFold) #IA
   }
   
   return(statistics)
