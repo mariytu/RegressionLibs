@@ -440,9 +440,11 @@ assignNameCol <- function(statistics) {
     statistics[k,1] <- paste("Fold",j)
     k <- k + 1
   }
-  statistics[12,1] = "Mean"
-  statistics[13,1] = "STDEV"
-  statistics[14,1] = "Cross-validated"
+  statistics[12,1] = "Min"
+  statistics[13,1] = "Max"
+  statistics[14,1] = "Mean"
+  statistics[15,1] = "STDEV"
+  statistics[16,1] = "Cross-validated"
   
   names(statistics) <- c("Name","RMSE", "R2", "IA")
   
