@@ -31,6 +31,9 @@ calculateDiff <- function(dataSet, inf, sup) {
     for (j in 1:ncol(dataSet)) {
       if (j >= inf && j <= sup) {
         resp[i,j] <- abs(dataSet[i,j] - before) / before
+        if (is.nan(resp[i,j])) {
+          resp[i,j] <- 0
+        }
       }
       
       before <- dataSet[i,j]
