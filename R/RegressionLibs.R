@@ -56,8 +56,8 @@ diagnosticData <- function(fit) {
   if (missing(fit)) {
     stop("Need to specify fit!")
   }
-  if (class(fit) != "fit") {
-    stop("fit must be a fit class!")
+  if (class(fit) != "lm") {
+    stop("fit must be a lm class!")
   }
   
   dependentVariableName <- "Dependent Variable"
