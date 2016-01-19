@@ -260,6 +260,9 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' ParallelPlot(iris.x, seq(1,nrow(iris.x),1), seq(1,ncol(iris.x),1), Species, "Species", 1, 0.5, TRUE)
 #' # A ParallelPlot of all rows and some columns
 #' ParallelPlot(iris.x, seq(1,nrow(iris.x),1), c(3,4), Species, "Species", 1, 0.5, TRUE)
+#' # A ParallelPlot with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ParallelPlot(iris.x, seq(1,nrow(iris.x),1), seq(1,ncol(iris.x),1), Species, "Species", 1, 0.5, TRUE, colours = myPalette)
 #' 
 #' 
 #' #Example 2
@@ -272,6 +275,9 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' ParallelPlot(cars.x, seq(1,nrow(cars.x),1), seq(1,ncol(cars.x),1), cars.y, "Price", 1, 0.5, TRUE)
 #' # A ParallelPlot of all rows and some columns
 #' ParallelPlot(cars.x, seq(1,nrow(cars.x),1), c(1,2,5,8,13,14), cars.y, "Price", 1, 0.8, TRUE)
+#' # A ParallelPlot with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ParallelPlot(cars.x, seq(1,nrow(cars.x),1), c(1,2,5,8,13,14), cars.y, "Price", 1, 0.8, TRUE, colours = myPalette)
 ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariableName, lineSize, alphaLine, x_lab, colours) {
   if (missing(data)) {
     stop("Need to specify data!")
@@ -552,7 +558,7 @@ DensityPlot <- function(data, col) {
 #' 
 #' # 3D Plot of 3 first columns of data set
 #' Plot3D(as.data.frame(cars.pca$x), c(1,2,3), cars.y)
-Plot3D<- function(data, columns, dependentVariable){
+Plot3D <- function(data, columns, dependentVariable){
   
   if (missing(data)) {
     stop("Need to specify data!")
@@ -608,13 +614,16 @@ Plot3D<- function(data, columns, dependentVariable){
 #' in your x axis.
 #' @param y_axis an integer that represent the number of the column that you want
 #' in your y axis.
-#' @
-#' param dependentVariableName is an optional parameter. It's an string that
+#' @param dependentVariableName is an optional parameter. It's an string that
 #' contains the name of your dependent variable.
 #' @param pointSize is an optional parameter of class numeric with a single value 
 #' that represent the point size of plot.
 #' @param alphaPoint is an optional parameter of class numeric with a single value 
 #' that represent the alpha of points in the plot.
+#' @param colours is an optional parameter of class character with a list of colours 
+#' to use in the plot. The default value for continuos dependent variable is 
+#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable are 
+#' the default colours defined by ggplot.
 #' 
 #' @seealso elbowPlot
 #' 
@@ -647,7 +656,7 @@ Plot3D<- function(data, columns, dependentVariable){
 #' 
 #' # Plot of first 2 columns of principal components
 #' simplePlot(as.data.frame(cars.pca$x), cars.y, 1, 2, "Price", 2, 0.9)
-simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint) {
+simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint, colours) {
   
   if (missing(data)) {
     stop("Need to specify data!")
@@ -691,6 +700,11 @@ simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariabl
   if (class(alphaPoint) != "numeric") {
     stop("alphaPoint must be a numeric class!")
   }
+  if (missing(colours)) {
+    if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+      colours <- c("darkred", "yellow", "darkgreen")
+    }
+  }
   
   #All parameters are OK!
   subData <- data.frame(data[,x_axis], data[,y_axis], DependentVariable)
@@ -702,20 +716,32 @@ simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariabl
     p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
       geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
       scale_color_gradientn(name = dependentVariableName,
-                            colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+                            colours = colours) + #set the pallete
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom" #legend at the bottom
       ) + #end theme
       xlab(x_axis) + ylab(y_axis)
   }
   else {
-    p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
-      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
-      scale_color_discrete(name = dependentVariableName) +
-      theme(panel.grid.minor = element_blank(), #remove gridlines
-            legend.position = "bottom" #legend at the bottom
-      ) + #end theme
-      xlab(x_axis) + ylab(y_axis)
+    if (missing(colours)) {
+      p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
+        geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+        scale_color_discrete(name = dependentVariableName) +
+        guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+        theme(panel.grid.minor = element_blank(), #remove gridlines
+              legend.position = "bottom" #legend at the bottom
+        ) + #end theme
+        xlab(x_axis) + ylab(y_axis)
+    } else {
+      p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
+        geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+        scale_color_manual(values = colours) +
+        guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+        theme(panel.grid.minor = element_blank(), #remove gridlines
+              legend.position = "bottom" #legend at the bottom
+        ) + #end theme
+        xlab(x_axis) + ylab(y_axis)
+    }
   }
   
   return (p)
