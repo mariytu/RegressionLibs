@@ -701,7 +701,7 @@ simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariabl
     stop("alphaPoint must be a numeric class!")
   }
   if (missing(colours)) {
-    if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+    if (class(DependentVariable) == "numeric" || class(DependentVariable) == "integer") {
       colours <- c("darkred", "yellow", "darkgreen")
     }
   }
