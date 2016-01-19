@@ -159,8 +159,6 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   if (missing(colours)) {
     if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
       colours <- c("darkred", "yellow", "darkgreen")
-    } else {
-      colours <- "dodgerblue4"
     }
   }
   
@@ -190,19 +188,35 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
       )#end theme
   }
   else {
-    p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
-      facet_grid(xvar ~ yvar, scales = "free") + 
-      geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
-      stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
-                   data = gg1$densities, position = "identity", 
-                   colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
-      #scale_color_discrete(name = dependentVariableName) +
-      scale_color_manual(values = colours) +
-      theme(panel.grid.minor = element_blank(), #remove gridlines
-            legend.position = "bottom", #legend at the bottom
-            axis.title.x = element_blank(), #remove x label
-            axis.title.y = element_blank()  #remove y label
-      )#end theme
+    
+    if (missing(colours)) {
+      p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
+        facet_grid(xvar ~ yvar, scales = "free") + 
+        geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+        stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
+                     data = gg1$densities, position = "identity", 
+                     colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
+        scale_color_brewer(palette = "dodgerblue4") + 
+        #scale_color_manual(values = colours) +
+        theme(panel.grid.minor = element_blank(), #remove gridlines
+              legend.position = "bottom", #legend at the bottom
+              axis.title.x = element_blank(), #remove x label
+              axis.title.y = element_blank()  #remove y label
+        )#end theme
+    } else {
+      p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
+        facet_grid(xvar ~ yvar, scales = "free") + 
+        geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
+        stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
+                     data = gg1$densities, position = "identity", 
+                     colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
+        scale_color_manual(values = colours) +
+        theme(panel.grid.minor = element_blank(), #remove gridlines
+              legend.position = "bottom", #legend at the bottom
+              axis.title.x = element_blank(), #remove x label
+              axis.title.y = element_blank()  #remove y label
+        )#end theme
+    }
   }
   
   return (p)
