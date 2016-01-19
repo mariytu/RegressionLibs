@@ -76,6 +76,10 @@ elbowPlot <- function(data.pca) {
 #' that represent the point size of plot.
 #' @param alphaPoint is an optional parameter of class numeric with a single value 
 #' that represent the alpha of points in the plot.
+#' @param colours is an optional parameter of class character with a list of colours 
+#' to use in the plot. The default value for continuos dependent variable is 
+#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable is 
+#' "dodgerblue4"
 #' @seealso makePairs
 #' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 #' @examples
@@ -99,7 +103,9 @@ elbowPlot <- function(data.pca) {
 #' ScatterplotMatrix(cars.x, seq(3, 8, 1), cars.y, "Price")
 #' # A Scatterplot of somes columns and different point size and alpha point
 #' ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 2, 1)
-#' 
+#' # A Scatterplot with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", colours = myPalette)
 #' 
 #' #Example 3
 #' # Getting a clean data set (without missing values)
@@ -112,7 +118,7 @@ elbowPlot <- function(data.pca) {
 #' 
 #' # A Scatterplot of some columns of principal components
 #' ScatterplotMatrix(as.data.frame(cars.pca$x), seq(1, 4, 1), cars.y, "Price")
-ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariableName, pointSize, alphaPoint){
+ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariableName, pointSize, alphaPoint, colours){
   
   if (missing(data)) {
     stop("Need to specify data!")
@@ -150,6 +156,13 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   if (class(alphaPoint) != "numeric") {
     stop("alphaPoint must be a numeric class!")
   }
+  if (missing(colours)) {
+    if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+      colours <- c("darkred", "yellow", "darkgreen")
+    } else {
+      colours <- "dodgerblue4"
+    }
+  }
   
   #All parameters are OK!
   # expand data frame for pairs plot
@@ -169,7 +182,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
                    data = gg1$densities, position = "identity", 
                    colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
       scale_color_gradientn(name = dependentVariableName,
-                            colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+                            colours = colours) + #set the pallete
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom", #legend at the bottom
             axis.title.x = element_blank(), #remove x label
@@ -183,7 +196,8 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
       stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
                    data = gg1$densities, position = "identity", 
                    colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
-      scale_color_discrete(name = dependentVariableName) +
+      #scale_color_discrete(name = dependentVariableName) +
+      scale_color_manual(values = colours) +
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom", #legend at the bottom
             axis.title.x = element_blank(), #remove x label
