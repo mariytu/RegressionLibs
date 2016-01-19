@@ -196,7 +196,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
         stat_density(aes(x = x, y = ..scaled.. * diff(range(x)) + min(x)), 
                      data = gg1$densities, position = "identity", 
                      colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
-        scale_color_brewer(palette = "dodgerblue4") + 
+        scale_color_brewer(palette = 1) + 
         #scale_color_manual(values = colours) +
         theme(panel.grid.minor = element_blank(), #remove gridlines
               legend.position = "bottom", #legend at the bottom
