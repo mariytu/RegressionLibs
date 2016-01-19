@@ -8,7 +8,7 @@ https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 }
 \usage{
 ScatterplotMatrix(data, columns, dependentVariable, dependentVariableName,
-  pointSize, alphaPoint)
+  pointSize, alphaPoint, colours)
 }
 \arguments{
 \item{data}{an object of class "data.frame" containing just numerical columns.}
@@ -27,6 +27,11 @@ that represent the point size of plot.}
 
 \item{alphaPoint}{is an optional parameter of class numeric with a single value
 that represent the alpha of points in the plot.}
+
+\item{colours}{is an optional parameter of class character with a list of colours
+to use in the plot. The default value for continuos dependent variable is
+c("darkred", "yellow", "darkgreen") and for categorical dependent variable are
+the default colours defined by ggplot.}
 }
 \description{
 Generate a Scatterplot Matrix of some columns of data set using ggplot.
@@ -40,6 +45,9 @@ Species <- iris[,5] # This is the dependent variable
 ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
 # A Scatterplot of somes columns and different point size and alpha point
 ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
+# A Scatterplot with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1, colours = myPalette)
 
 
 #Example 2
@@ -52,7 +60,9 @@ cars.y <- cars[,17] # This is the dependent variable
 ScatterplotMatrix(cars.x, seq(3, 8, 1), cars.y, "Price")
 # A Scatterplot of somes columns and different point size and alpha point
 ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 2, 1)
-
+# A Scatterplot with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 1.5, 1, colours = myPalette)
 
 #Example 3
 # Getting a clean data set (without missing values)

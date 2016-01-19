@@ -5,7 +5,7 @@
 \title{Parallel Plot (Plot)}
 \usage{
 ParallelPlot(data, rows, columns, dependentVariable, dependentVariableName,
-  lineSize, alphaLine, x_lab)
+  lineSize, alphaLine, x_lab, colours)
 }
 \arguments{
 \item{data}{an object of class "data.frame" containing just numerical columns.}
@@ -31,6 +31,11 @@ that represent the alpha of lines in the plot.}
 \item{x_lab}{a boolean that represent if you want or not the x axis scale. In
 some cases, when you have many columns the plot could be ugly! The default value
 is False.}
+
+\item{colours}{is an optional parameter of class character with a list of colours
+to use in the plot. The default value for continuos dependent variable is
+c("darkred", "yellow", "darkgreen") and for categorical dependent variable are
+the default colours defined by ggplot.}
 }
 \description{
 Generate a plot of the columns of a data set for all or a range of instances. In
@@ -45,6 +50,9 @@ Species <- iris[,5] # This is the dependent variable
 ParallelPlot(iris.x, seq(1,nrow(iris.x),1), seq(1,ncol(iris.x),1), Species, "Species", 1, 0.5, TRUE)
 # A ParallelPlot of all rows and some columns
 ParallelPlot(iris.x, seq(1,nrow(iris.x),1), c(3,4), Species, "Species", 1, 0.5, TRUE)
+# A ParallelPlot with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ParallelPlot(iris.x, seq(1,nrow(iris.x),1), seq(1,ncol(iris.x),1), Species, "Species", 1, 0.5, TRUE, colours = myPalette)
 
 
 #Example 2
@@ -57,5 +65,8 @@ cars.y <- cars[,17] # This is the dependent variable
 ParallelPlot(cars.x, seq(1,nrow(cars.x),1), seq(1,ncol(cars.x),1), cars.y, "Price", 1, 0.5, TRUE)
 # A ParallelPlot of all rows and some columns
 ParallelPlot(cars.x, seq(1,nrow(cars.x),1), c(1,2,5,8,13,14), cars.y, "Price", 1, 0.8, TRUE)
+# A ParallelPlot with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ParallelPlot(cars.x, seq(1,nrow(cars.x),1), c(1,2,5,8,13,14), cars.y, "Price", 1, 0.8, TRUE, colours = myPalette)
 }
 

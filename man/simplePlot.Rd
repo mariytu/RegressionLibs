@@ -5,7 +5,7 @@
 \title{Simple Plot of 2 columns (Plot)}
 \usage{
 simplePlot(data, DependentVariable, x_axis, y_axis, dependentVariableName,
-  pointSize, alphaPoint)
+  pointSize, alphaPoint, colours)
 }
 \arguments{
 \item{data}{an object of class data frame with the data.}
@@ -27,6 +27,11 @@ that represent the point size of plot.}
 
 \item{alphaPoint}{is an optional parameter of class numeric with a single value
 that represent the alpha of points in the plot.}
+
+\item{colours}{is an optional parameter of class character with a list of colours
+to use in the plot. The default value for continuos dependent variable is
+c("darkred", "yellow", "darkgreen") and for categorical dependent variable are
+the default colours defined by ggplot.}
 }
 \description{
 Generate a plot of 2 columns of data set using ggplot. You must indicate which
@@ -39,6 +44,9 @@ Species <- iris[,5] # This is the dependent variable
 
 # Plot of first 2 columns of data set
 simplePlot(iris.x, Species, 1, 2, "Species", 2, 0.9)
+# A plot with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+simplePlot(iris.x, Species, 1, 2, "Species", 2, 0.9, colours = myPalette)
 
 
 #Example 2
@@ -49,6 +57,9 @@ ir.pca <- prcomp(iris.x, center = TRUE, scale. = TRUE) #performing prcomp
 
 # Plot of first 2 columns of principal components
 simplePlot(as.data.frame(ir.pca$x), Species, 1, 2, "Species", 2, 0.9)
+# A plot with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+simplePlot(as.data.frame(ir.pca$x), Species, 1, 2, "Species", 2, 0.9, colours = myPalette)
 
 
 #Example 3
@@ -61,6 +72,9 @@ cars.pca <- prcomp(cars.x, center = TRUE, scale. = TRUE) #performing prcomp
 
 # Plot of first 2 columns of principal components
 simplePlot(as.data.frame(cars.pca$x), cars.y, 1, 2, "Price", 2, 0.9)
+# A plot with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+simplePlot(as.data.frame(cars.pca$x), cars.y, 1, 2, "Price", 2, 0.9, colours = myPalette)
 }
 \seealso{
 elbowPlot

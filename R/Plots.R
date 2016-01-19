@@ -634,6 +634,9 @@ Plot3D <- function(data, columns, dependentVariable){
 #' 
 #' # Plot of first 2 columns of data set
 #' simplePlot(iris.x, Species, 1, 2, "Species", 2, 0.9)
+#' # A plot with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' simplePlot(iris.x, Species, 1, 2, "Species", 2, 0.9, colours = myPalette)
 #' 
 #' 
 #' #Example 2
@@ -644,6 +647,9 @@ Plot3D <- function(data, columns, dependentVariable){
 #' 
 #' # Plot of first 2 columns of principal components
 #' simplePlot(as.data.frame(ir.pca$x), Species, 1, 2, "Species", 2, 0.9)
+#' # A plot with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' simplePlot(as.data.frame(ir.pca$x), Species, 1, 2, "Species", 2, 0.9, colours = myPalette)
 #' 
 #' 
 #' #Example 3
@@ -656,6 +662,9 @@ Plot3D <- function(data, columns, dependentVariable){
 #' 
 #' # Plot of first 2 columns of principal components
 #' simplePlot(as.data.frame(cars.pca$x), cars.y, 1, 2, "Price", 2, 0.9)
+#' # A plot with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' simplePlot(as.data.frame(cars.pca$x), cars.y, 1, 2, "Price", 2, 0.9, colours = myPalette)
 simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariableName, pointSize, alphaPoint, colours) {
   
   if (missing(data)) {
