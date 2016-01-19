@@ -199,6 +199,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
                      data = gg1$densities, position = "identity", 
                      colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
         scale_color_discrete(name = dependentVariableName) +
+        guides(colour = guide_legend(override.aes = list(alpha = 1))) +
         theme(panel.grid.minor = element_blank(), #remove gridlines
               legend.position = "bottom", #legend at the bottom
               axis.title.x = element_blank(), #remove x label
@@ -212,6 +213,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
                      data = gg1$densities, position = "identity", 
                      colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
         scale_color_manual(values = colours) +
+        guides(colour = guide_legend(override.aes = list(alpha = 1))) +
         theme(panel.grid.minor = element_blank(), #remove gridlines
               legend.position = "bottom", #legend at the bottom
               axis.title.x = element_blank(), #remove x label
@@ -244,6 +246,10 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' @param x_lab a boolean that represent if you want or not the x axis scale. In 
 #' some cases, when you have many columns the plot could be ugly! The default value 
 #' is False.
+#' @param colours is an optional parameter of class character with a list of colours 
+#' to use in the plot. The default value for continuos dependent variable is 
+#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable are 
+#' the default colours defined by ggplot.
 #' 
 #' @examples
 #' #Example 1
@@ -266,7 +272,7 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
 #' ParallelPlot(cars.x, seq(1,nrow(cars.x),1), seq(1,ncol(cars.x),1), cars.y, "Price", 1, 0.5, TRUE)
 #' # A ParallelPlot of all rows and some columns
 #' ParallelPlot(cars.x, seq(1,nrow(cars.x),1), c(1,2,5,8,13,14), cars.y, "Price", 1, 0.8, TRUE)
-ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariableName, lineSize, alphaLine, x_lab) {
+ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariableName, lineSize, alphaLine, x_lab, colours) {
   if (missing(data)) {
     stop("Need to specify data!")
   }
@@ -315,6 +321,11 @@ ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariab
   if(class(x_lab) != "logical") {
     stop("x_lab must be a logical class!")
   }
+  if (missing(colours)) {
+    if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+      colours <- c("darkred", "yellow", "darkgreen")
+    }
+  }
   
   #All parameters are OK!
   x_name = "Wavelength"
@@ -331,31 +342,62 @@ ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariab
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_gradientn(name = dependentVariableName,
-                              colours = c("darkred", "yellow", "darkgreen")) +
-        xlab(x_name) + ylab("Values")
+                              colours = colours) + #set the pallete
+        xlab(x_name) + ylab("Values") +
+        theme(legend.position = "bottom" #legend at the bottom
+        )#end theme
     }
     else {
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_gradientn(name = dependentVariableName,
-                              colours = c("darkred", "yellow", "darkgreen")) +
+                              colours = colours) + #set the pallete
         scale_x_discrete(breaks = c()) +
-        xlab(x_name) + ylab("Values")
+        xlab(x_name) + ylab("Values") +
+        theme(legend.position = "bottom" #legend at the bottom
+        )#end theme
     }
   }
   else {
     if (x_lab) {
-      p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
-        geom_line(size = lineSize, alpha = alphaLine) +
-        scale_color_discrete(name = dependentVariableName) +
-        xlab(x_name) + ylab("Values")
+      if (missing(colours)) {
+        p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+          geom_line(size = lineSize, alpha = alphaLine) +
+          scale_color_discrete(name = dependentVariableName) +
+          xlab(x_name) + ylab("Values") +
+          guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+          theme(legend.position = "bottom" #legend at the bottom
+          )#end theme +
+      } else {
+        p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+          geom_line(size = lineSize, alpha = alphaLine) +
+          scale_color_manual(values = colours) +
+          xlab(x_name) + ylab("Values") +
+          guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+          theme(legend.position = "bottom" #legend at the bottom
+          )#end theme
+      }
     }
     else {
-      p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
-        geom_line(size = lineSize, alpha = alphaLine) +
-        scale_color_discrete(name = dependentVariableName) +
-        scale_x_discrete(breaks = c()) +
-        xlab(x_name) + ylab("Values")
+      if (missing(colours)) {
+        p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+          geom_line(size = lineSize, alpha = alphaLine) +
+          scale_color_discrete(name = dependentVariableName) +
+          scale_x_discrete(breaks = c()) +
+          xlab(x_name) + ylab("Values") +
+          guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+          theme(legend.position = "bottom" #legend at the bottom
+          )#end theme
+      } else {
+        p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
+          geom_line(size = lineSize, alpha = alphaLine) +
+          scale_color_manual(values = colours) +
+          scale_x_discrete(breaks = c()) +
+          xlab(x_name) + ylab("Values") +
+          guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+          theme(legend.position = "bottom" #legend at the bottom
+          )#end theme
+      }
     }
   }
   
