@@ -78,8 +78,8 @@ elbowPlot <- function(data.pca) {
 #' that represent the alpha of points in the plot.
 #' @param colours is an optional parameter of class character with a list of colours 
 #' to use in the plot. The default value for continuos dependent variable is 
-#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable is 
-#' "dodgerblue4"
+#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable are 
+#' the default colours defined by ggplot.
 #' @seealso makePairs
 #' @source https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
 #' @examples
@@ -91,6 +91,9 @@ elbowPlot <- function(data.pca) {
 #' ScatterplotMatrix(iris.x, c(1,2,3,4), Species, "Species")
 #' # A Scatterplot of somes columns and different point size and alpha point
 #' ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1)
+#' # A Scatterplot with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ScatterplotMatrix(iris.x, c(2,4), Species, "Species", 2, 1, colours = myPalette)
 #' 
 #' 
 #' #Example 2
@@ -105,7 +108,7 @@ elbowPlot <- function(data.pca) {
 #' ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 2, 1)
 #' # A Scatterplot with a different colours palette
 #' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
-#' ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", colours = myPalette)
+#' ScatterplotMatrix(cars.x, c(2,4), cars.y, "Price", 1.5, 1, colours = myPalette)
 #' 
 #' #Example 3
 #' # Getting a clean data set (without missing values)
@@ -196,8 +199,6 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
                      data = gg1$densities, position = "identity", 
                      colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
         scale_color_discrete(name = dependentVariableName) +
-        #scale_color_brewer(palette = 1) + 
-        #scale_color_manual(values = colours) +
         theme(panel.grid.minor = element_blank(), #remove gridlines
               legend.position = "bottom", #legend at the bottom
               axis.title.x = element_blank(), #remove x label
