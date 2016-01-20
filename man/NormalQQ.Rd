@@ -41,6 +41,12 @@ StResidualsFitted(diagnostic, "Petal Width") #Generating Standarized Residuals v
 NormalQQ(diagnostic, "Petal Width") # Generating Normal-QQ plot
 StResidualsLeverange(diagnostic, "Petal Width") # Generating Leverange v/s Standarized Residuals plot
 
+# Plots with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ResidualsFitted(diagnostic, "Petal Width", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+StResidualsFitted(diagnostic, "Petal Width", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+StResidualsLeverange(diagnostic, "Petal Width",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+
 
 #Example 2
 # Getting a clean data set (without missing values)
@@ -62,6 +68,12 @@ ResidualsFitted(diagnostic, "Price") # Generating Residuals v/s Fitted Values pl
 StResidualsFitted(diagnostic, "Price") #Generating Standarized Residuals v/s Fitted Values plot
 NormalQQ(diagnostic, "Price") # Generating Normal-QQ plot
 StResidualsLeverange(diagnostic, "Price") # Generating Leverange v/s Standarized Residuals plot
+
+# Plots with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ResidualsFitted(diagnostic, "Price", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+StResidualsFitted(diagnostic, "Price", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+StResidualsLeverange(diagnostic, "Price",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
 }
 \seealso{
 diagnosticData, ResidualsFitted, StResidualsFitted, StResidualsLeverange

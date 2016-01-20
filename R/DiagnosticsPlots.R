@@ -6,6 +6,10 @@
 #' calculated for make the graph.
 #' @param dependentVariableName is an optional parameter. It's an string that
 #' contains de name of your dependent variable of your regression model.
+#' @param colours is an optional parameter of class character with a list of colours 
+#' to use in the plot. The default value for continuos dependent variable is 
+#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable are 
+#' the default colours defined by ggplot.
 #' 
 #' @seealso diagnosticData, StResidualsFitted, NormalQQ, StResidualsLeverange
 #' 
@@ -29,6 +33,12 @@
 #' NormalQQ(diagnostic, "Petal Width") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Petal Width") # Generating Leverange v/s Standarized Residuals plot
 #' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Petal Width", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Petal Width", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Petal Width",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+#' 
 #' 
 #' #Example 2
 #' # Getting a clean data set (without missing values)
@@ -50,7 +60,13 @@
 #' StResidualsFitted(diagnostic, "Price") #Generating Standarized Residuals v/s Fitted Values plot
 #' NormalQQ(diagnostic, "Price") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Price") # Generating Leverange v/s Standarized Residuals plot
-ResidualsFitted <- function(diagnostic, dependentVariableName) {
+#' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Price", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Price", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Price",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+ResidualsFitted <- function(diagnostic, dependentVariableName, colours) {
   
   if (missing(diagnostic)) {
     stop("Need to specify diagnostic!")
@@ -64,13 +80,16 @@ ResidualsFitted <- function(diagnostic, dependentVariableName) {
   if (class(dependentVariableName) != "character") {
     stop("dependentVariableName must be a character class!")
   }
+  if (missing(colours)) {
+    colours <- c("darkred", "yellow", "darkgreen")
+  }
   
   #All parameters are OK!
   p <- ggplot(diagnostic, aes(fitted, resid)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName,
-                          colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+                          colours = colours) + #set the pallete
     geom_smooth(method = "auto", size = 0.7, se = F, colour = "#299E98") +
     xlab("Fitted Values") +
     ylab("Residuals") +
@@ -88,6 +107,10 @@ ResidualsFitted <- function(diagnostic, dependentVariableName) {
 #' calculated for make the graph.
 #' @param dependentVariableName is an optional parameter. It's an string that
 #' contains de name of your dependent variable of your regression model.
+#' @param colours is an optional parameter of class character with a list of colours 
+#' to use in the plot. The default value for continuos dependent variable is 
+#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable are 
+#' the default colours defined by ggplot.
 #' 
 #' @seealso diagnosticData, ResidualsFitted, NormalQQ, StResidualsLeverange
 #' 
@@ -111,6 +134,12 @@ ResidualsFitted <- function(diagnostic, dependentVariableName) {
 #' NormalQQ(diagnostic, "Petal Width") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Petal Width") # Generating Leverange v/s Standarized Residuals plot
 #' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Petal Width", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Petal Width", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Petal Width",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+#' 
 #' 
 #' #Example 2
 #' # Getting a clean data set (without missing values)
@@ -132,7 +161,13 @@ ResidualsFitted <- function(diagnostic, dependentVariableName) {
 #' StResidualsFitted(diagnostic, "Price") #Generating Standarized Residuals v/s Fitted Values plot
 #' NormalQQ(diagnostic, "Price") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Price") # Generating Leverange v/s Standarized Residuals plot
-StResidualsFitted <- function(diagnostic, dependentVariableName) {
+#' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Price", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Price", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Price",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+StResidualsFitted <- function(diagnostic, dependentVariableName, colours) {
   
   if (missing(diagnostic)) {
     stop("Need to specify diagnostic!")
@@ -146,12 +181,15 @@ StResidualsFitted <- function(diagnostic, dependentVariableName) {
   if (class(dependentVariableName) != "character") {
     stop("dependentVariableName must be a character class!")
   }
+  if (missing(colours)) {
+    colours <- c("darkred", "yellow", "darkgreen")
+  }
   
   #All parameters are OK!
   p <- ggplot(diagnostic, aes(fitted, sqrt.abs.stz.r)) +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName,
-                          colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+                          colours = colours) + #set the pallete
     geom_smooth(method = "auto", size = 0.7, se = F, colour = "#299E98") +
     xlab("Fitted Values") +
     ylab(expression(sqrt("|Standarized Residuals|"))) +
@@ -196,6 +234,12 @@ StResidualsFitted <- function(diagnostic, dependentVariableName) {
 #' NormalQQ(diagnostic, "Petal Width") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Petal Width") # Generating Leverange v/s Standarized Residuals plot
 #' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Petal Width", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Petal Width", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Petal Width",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+#' 
 #' 
 #' #Example 2
 #' # Getting a clean data set (without missing values)
@@ -217,6 +261,12 @@ StResidualsFitted <- function(diagnostic, dependentVariableName) {
 #' StResidualsFitted(diagnostic, "Price") #Generating Standarized Residuals v/s Fitted Values plot
 #' NormalQQ(diagnostic, "Price") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Price") # Generating Leverange v/s Standarized Residuals plot
+#' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Price", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Price", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Price",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
 NormalQQ <- function(diagnostic, dependentVariableName) {
   
   if (missing(diagnostic)) {
@@ -257,6 +307,10 @@ NormalQQ <- function(diagnostic, dependentVariableName) {
 #' calculated for make the graph.
 #' @param dependentVariableName is an optional parameter. It's an string that
 #' contains de name of your dependent variable of your regression model.
+#' @param colours is an optional parameter of class character with a list of colours 
+#' to use in the plot. The default value for continuos dependent variable is 
+#' c("darkred", "yellow", "darkgreen") and for categorical dependent variable are 
+#' the default colours defined by ggplot.
 #' 
 #' @seealso diagnosticData, ResidualsFitted, StResidualsFitted, NormalQQ
 #' 
@@ -280,6 +334,12 @@ NormalQQ <- function(diagnostic, dependentVariableName) {
 #' NormalQQ(diagnostic, "Petal Width") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Petal Width") # Generating Leverange v/s Standarized Residuals plot
 #' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Petal Width", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Petal Width", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Petal Width",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+#' 
 #' 
 #' #Example 2
 #' # Getting a clean data set (without missing values)
@@ -301,7 +361,13 @@ NormalQQ <- function(diagnostic, dependentVariableName) {
 #' StResidualsFitted(diagnostic, "Price") #Generating Standarized Residuals v/s Fitted Values plot
 #' NormalQQ(diagnostic, "Price") # Generating Normal-QQ plot
 #' StResidualsLeverange(diagnostic, "Price") # Generating Leverange v/s Standarized Residuals plot
-StResidualsLeverange <- function(diagnostic, dependentVariableName) {
+#' 
+#' # Plots with a different colours palette
+#' myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+#' ResidualsFitted(diagnostic, "Price", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+#' StResidualsFitted(diagnostic, "Price", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+#' StResidualsLeverange(diagnostic, "Price",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+StResidualsLeverange <- function(diagnostic, dependentVariableName, colours) {
   
   if (missing(diagnostic)) {
     stop("Need to specify diagnostic!")
@@ -315,12 +381,15 @@ StResidualsLeverange <- function(diagnostic, dependentVariableName) {
   if (class(dependentVariableName) != "character") {
     stop("dependentVariableName must be a character class!")
   }
+  if (missing(colours)) {
+    colours <- c("darkred", "yellow", "darkgreen")
+  }
   
   #All parameters are OK!
   p <- ggplot(diagnostic, aes(leverage, stz.r)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
-    scale_color_gradientn(name = dependentVariableName, colours = c("darkred", "yellow", "darkgreen")) + #set the pallete
+    scale_color_gradientn(name = dependentVariableName, colours = colours) + #set the pallete
     geom_smooth(method = "auto", size = 0.7, se = F, colour = "#299E98") +
     xlab("Leverange") +
     ylab("Standarized Residuals") +

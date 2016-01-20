@@ -4,7 +4,7 @@
 \alias{StResidualsFitted}
 \title{Standarized Residuals v/s Fitted Values (Plot)}
 \usage{
-StResidualsFitted(diagnostic, dependentVariableName)
+StResidualsFitted(diagnostic, dependentVariableName, colours)
 }
 \arguments{
 \item{diagnostic}{an object of class data frame with differents error types
@@ -12,6 +12,11 @@ calculated for make the graph.}
 
 \item{dependentVariableName}{is an optional parameter. It's an string that
 contains de name of your dependent variable of your regression model.}
+
+\item{colours}{is an optional parameter of class character with a list of colours
+to use in the plot. The default value for continuos dependent variable is
+c("darkred", "yellow", "darkgreen") and for categorical dependent variable are
+the default colours defined by ggplot.}
 }
 \description{
 Generate a plot of fitted values v/s Standarized Residuals of a regression model.
@@ -36,6 +41,12 @@ StResidualsFitted(diagnostic, "Petal Width") #Generating Standarized Residuals v
 NormalQQ(diagnostic, "Petal Width") # Generating Normal-QQ plot
 StResidualsLeverange(diagnostic, "Petal Width") # Generating Leverange v/s Standarized Residuals plot
 
+# Plots with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ResidualsFitted(diagnostic, "Petal Width", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+StResidualsFitted(diagnostic, "Petal Width", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+StResidualsLeverange(diagnostic, "Petal Width",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
+
 
 #Example 2
 # Getting a clean data set (without missing values)
@@ -57,6 +68,12 @@ ResidualsFitted(diagnostic, "Price") # Generating Residuals v/s Fitted Values pl
 StResidualsFitted(diagnostic, "Price") #Generating Standarized Residuals v/s Fitted Values plot
 NormalQQ(diagnostic, "Price") # Generating Normal-QQ plot
 StResidualsLeverange(diagnostic, "Price") # Generating Leverange v/s Standarized Residuals plot
+
+# Plots with a different colours palette
+myPalette <- c("darkolivegreen4", "goldenrod1", "dodgerblue4")
+ResidualsFitted(diagnostic, "Price", colours = myPalette) # Generating Residuals v/s Fitted Values plot
+StResidualsFitted(diagnostic, "Price", colours = myPalette) #Generating Standarized Residuals v/s Fitted Values plot
+StResidualsLeverange(diagnostic, "Price",colours = myPalette) # Generating Leverange v/s Standarized Residuals plot
 }
 \seealso{
 diagnosticData, ResidualsFitted, NormalQQ, StResidualsLeverange
