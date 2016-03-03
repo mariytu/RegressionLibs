@@ -72,7 +72,7 @@ RidgeModel <- function(X, Y, lambdas, percent) {
     
     for (j in (1:nrow(myCoef))) #Loop for each row of myCoef
     {
-      BETA <- matrix(myCoef[i,], ncol = 1) #Extract the coefficients for the i-th
+      BETA <- matrix(myCoef[j,], ncol = 1) #Extract the coefficients for the i-th
       #value of lambda
       YHat <- XV%*%BETA #We obtain the predicted values for the validation set
       
