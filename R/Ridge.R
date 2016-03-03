@@ -213,6 +213,8 @@ RidgeModel2 <- function(X, Y, lambdas, percent) {
   #plot(Y,YHat) #muestra graficamente la relaciÃ³n entre el Y observado y el Y predicho (YHat)
   cor(Y,YHat)^2 #calcula el coeficiente de determinaciÃ³n
   
+  print(cor(Y,YHat)^2)
+  
   return(mimodelo)
   #FIN#
 }
