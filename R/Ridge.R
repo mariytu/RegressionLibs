@@ -104,8 +104,6 @@ RidgeModel <- function(X, Y, lambdas, percent) {
   print(mean(bestAMEAN))
   print(mean(bestRRMSE))
   
-  print(bestLambdas)
-  
   #The ridge estimates for all data model using the average of the optimal lambda
   myModel <- lm.ridge(Y~X, na.action = na.omit, lambda = mean(bestLambdas))
   
@@ -113,6 +111,8 @@ RidgeModel <- function(X, Y, lambdas, percent) {
   YHat <- cbind(1,X)%*%coefficients(myModel)
   #plot(Y,YHat) #muestra graficamente la relaciÃ³n entre el Y observado y el Y predicho (YHat)
   cor(Y,YHat)^2 #Calcultaes the coefficient of determination
+  
+  print(cor(Y,YHat)^2)
   
   return(myModel)
 }
