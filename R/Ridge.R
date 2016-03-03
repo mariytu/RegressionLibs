@@ -89,10 +89,10 @@ RidgeModel <- function(X, Y, lambdas, percent) {
     }
     #For each lambda
     #accumulates the value of lambda that maximizes the correlation between YV and YHat
-    bestLambdas <- c(bestLambdas, milambda[which.max(results[,1])])
-    bestARMSE <- c(bestARMSE, milambda[which.max(results[,2])])
-    bestAMEAN <- c(bestAMEAN, milambda[which.max(results[,3])])
-    bestRRMSE <- c(bestRRMSE, milambda[which.max(results[,4])])
+    bestLambdas <- c(bestLambdas, lambdas[which.max(results[,1])])
+    bestARMSE <- c(bestARMSE, lambdas[which.max(results[,2])])
+    bestAMEAN <- c(bestAMEAN, lambdas[which.max(results[,3])])
+    bestRRMSE <- c(bestRRMSE, lambdas[which.max(results[,4])])
   }
   #We override the columns name of results matrix
   colnames(results) <- c("R2", "ARMSE", "AMEAN", "RRMSE")
