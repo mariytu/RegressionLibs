@@ -51,7 +51,7 @@ RidgeModel <- function(X, Y, lambdas, percent) {
   
   instances <- round(nrow(X)*percent)
   
-  #set.seed(2015) #The seed for random values
+  set.seed(2015) #The seed for random values
   
   for (i in (1:20)) #Loop for generate 20 train-test set's
   {
