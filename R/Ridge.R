@@ -160,9 +160,9 @@ RidgeModel2 <- function(X, Y, lambdas, percent) {
     #Y predicho (YHat) obtenido aplicando el vector BETA estimado por el modelo anterior, para cada lambda
     miscoef=coefficients(mimodelo) #extrae los coeficientes en una matriz con tantas filas como lambdas se haya evaludo y tantas columnas como
     #regresoras (+1 por la constante)
-    for (i in (1:nrow(miscoef)))   #loop para cada fila de miscoef
+    for (k in (1:nrow(miscoef)))   #loop para cada fila de miscoef
     {
-      BETA=matrix(miscoef[i,],ncol=1) #extrae los coeficientes para el i-esimo valor de lambda
+      BETA=matrix(miscoef[k,],ncol=1) #extrae los coeficientes para el i-esimo valor de lambda
       YHat=XV%*%BETA                  #obtiene los valores predichos para el set de validaciÃ³n
       
       ############################################ MODIFICADO POR JULIO #################################
