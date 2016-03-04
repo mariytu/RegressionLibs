@@ -44,6 +44,9 @@ RidgeModel <- function(X, Y, lambdas, percent) {
     }
   }
   
+  print(paste("Instances",nrow(X)))
+  print(paste("Instances",length(Y)))
+  
   bestLambdas <- c() #Assign the empty list. Here the optimal lambdas accumulate for each training set-validation
   bestARMSE <- c()
   bestAMEAN <- c()
@@ -55,7 +58,7 @@ RidgeModel <- function(X, Y, lambdas, percent) {
   
   for (i in (1:20)) #Loop for generate 20 train-test set's
   {
-    indices <- sample(seq(nrow(X)), instances) # obtiene un con junto de 500 indices 
+    indices <- sample(seq(nrow(X)), instances) # obtiene un conjunto de 500 indices 
     #para seleccionar los datos de entrenamiento
     XT <- X[indices,] #Select the regressors matrix for the training sample
     YT <- Y[indices] #Select the vector of dependent variable for the training sample
