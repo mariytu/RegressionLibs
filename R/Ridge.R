@@ -74,7 +74,7 @@ RidgeModel <- function(X, Y, lambdas, percent) {
     
     for (j in (1:nrow(myCoef))) #Loop for each row of myCoef
     {
-      BETA <- matrix(myCoef[j,], ncol = 1) #Extract the coefficients for the i-th
+      BETA <- matrix(myCoef[j,], ncol = 1) #Extract the coefficients for the j-th
       #value of lambda
       YHat <- XV%*%BETA #We obtain the predicted values for the validation set
       
@@ -84,7 +84,11 @@ RidgeModel <- function(X, Y, lambdas, percent) {
       ARMSE <- sqrt(sum((yD-xD)^2)/length(yD))
       AMEAN <- mean(c(xD,yD))
       RRMSE <- 100*ARMSE/AMEAN
-      print(paste("aqui"))
+      
+      print(paste("length(YHat):",length(YHat)))
+      print(paste("nrow(XV):",nrow(XV)))
+      print(paste("length(YV)",length(YV)))
+      
       results <- rbind(results, c(cor(YHat,YV), ARMSE, AMEAN, RRMSE)) #We accumulate
       #on results the correlations between YV and YHat, and the others statistics
       
