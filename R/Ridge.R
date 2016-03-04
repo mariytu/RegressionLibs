@@ -86,13 +86,13 @@ RidgeModel <- function(X, Y, lambdas, percent) {
       RRMSE <- 100*ARMSE/AMEAN
       
       print(paste("Instances",nrow(X)))
-      print(paste("train:"),length(indices)))
+      print(paste("train:",length(indices)))
       print(paste("test:",(nrow(X)-length(indices))))
       
       print(paste("XT",nrow(XT)))
-      print(paste("YT"),length(YT))
-      print(paste("XV"),nrow(XV))
-      print(paste("YV"),length(YV))
+      print(paste("YT",length(YT)))
+      print(paste("XV",nrow(XV)))
+      print(paste("YV",length(YV)))
 
       print(paste("length(YHat):",length(YHat)))
       
