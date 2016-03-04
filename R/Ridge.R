@@ -59,10 +59,9 @@ RidgeModel <- function(X, Y, lambdas, percent) {
     #para seleccionar los datos de entrenamiento
     XT <- X[indices,] #Select the regressors matrix for the training sample
     YT <- Y[indices] #Select the vector of dependent variable for the training sample
+    YV <- Y[-indices] #Select the vector of dependent variable for the validation
     XV <- cbind(1,X[-indices,]) #Select the matrix of regressors for the validation
     #We add a columns of 1's for the constant
-    aux <- -indices 
-    YV <- Y[aux] #Select the vector of dependent variable for the validation
     
     #Generate a ridge regression model usign the lambas provided
     myModel <- lm.ridge(YT~XT, na.action = na.omit, lambda = lambdas)
