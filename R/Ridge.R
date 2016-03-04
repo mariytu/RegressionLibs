@@ -89,6 +89,7 @@ RidgeModel <- function(X, Y, lambdas, percent) {
       print(paste("Instances",nrow(X)))
       print(paste("train:",length(indices)))
       print(paste("test:",(nrow(X)-length(indices))))
+      print(paste("-INDICES",length(-indices)))
       
       print(paste("XT",nrow(XT)))
       print(paste("YT",length(YT)))
