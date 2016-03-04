@@ -85,9 +85,16 @@ RidgeModel <- function(X, Y, lambdas, percent) {
       AMEAN <- mean(c(xD,yD))
       RRMSE <- 100*ARMSE/AMEAN
       
+      print(paste("Instances",nrow(X)))
+      print(paste("train:"),length(indices)))
+      print(paste("test:",(nrow(X)-length(indices))))
+      
+      print(paste("XT",nrow(XT)))
+      print(paste("YT"),length(YT))
+      print(paste("XV"),nrow(XV))
+      print(paste("YV"),length(YV))
+
       print(paste("length(YHat):",length(YHat)))
-      print(paste("nrow(XV):",nrow(XV)))
-      print(paste("length(YV)",length(YV)))
       
       results <- rbind(results, c(cor(YHat,YV), ARMSE, AMEAN, RRMSE)) #We accumulate
       #on results the correlations between YV and YHat, and the others statistics
