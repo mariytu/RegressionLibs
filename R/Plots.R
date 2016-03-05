@@ -755,3 +755,135 @@ simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariabl
   
   return (p)
 }
+
+#' Ridge Plot
+#'
+#' Plot the cross-validation curve produced by cv.glmnet using ggplot
+#' 
+#' @param ridgeModelCV an object of class cv.glmnet that contain the cross-validation
+#' information for generate a curve.
+#' @param pointSize is an optional parameter of class numeric with a single value 
+#' that represent the point size of plot. The default value is 1.5
+#' @param alphaPoint is an optional parameter of class numeric with a single value 
+#' that represent the alpha of points in the plot. The default value is 0.8
+#' @param colourPoint is an optional parameter of class character with a single
+#' colour. The default value is "darkred".
+#' @param colourLine is an optional parameter of class character with a single
+#' colour. The default value is "dodgerblue4".
+#' @param errorMode is an optional parameter of class character that defined if the
+#' error will be displayed using "errorbar" or "ribbon". The default value is "errorbar"
+#' @param colourError is an optional parameter of class character with a single
+#' colour. The default value is "#A9A9A9".
+#' 
+#' @examples
+#' #Example 1
+#' #install.packages("MASS")
+#' library(MASS) #for ridge regression
+#' #install.packages("glmnet")
+#' library(glmnet) #for parameter optimization
+#' iris.x <- iris[,1:3] # These are the independent variables
+#' iris.y <- iris[,4] # This is the dependent variable
+#' 
+#' #We perform the ridge method
+#' grid <- 10^seq(10, -2, length = 100) #Define a large grid for lambda values
+#' set.seed(2015)
+#' ridge <- cv.glmnet(as.matrix(iris.x), iris.y, alpha = 0, lambda = grid) #alpha = 0 for ridge, alpha = 1 for lasso
+#' RidgePlot(ridge)
+#' 
+#' bestLambda <- ridge$lambda.min # The optimal lambda
+#' ridge.final <- lm.ridge(y ~ ., data = X, lambda = bestLambda)
+#' 
+#' 
+#' #Example 2
+#' #install.packages("MASS")
+#' library(MASS) #for ridge regression
+#' #install.packages("glmnet")
+#' library(glmnet) #for parameter optimization
+#' # Getting a clean data set (without missing values)
+#' cars <- read.csv("https://dl.dropboxusercontent.com/u/12599702/autosclean.csv", sep = ";", dec = ",")
+#' cars.x <- cars[,1:16] # These are the independent variables
+#' cars.y <- cars[,17] # This is the dependent variable
+#' 
+#' #We perform the ridge method
+#' grid <- 10^seq(10, -2, length = 100) #Define a large grid for lambda values
+#' set.seed(2015)
+#' ridge <- cv.glmnet(as.matrix(cars.x), cars.y, alpha = 0, lambda = grid) #alpha = 0 for ridge, alpha = 1 for lasso
+#' RidgePlot(ridge)
+#' RidgePlot(ridge, errorMode = "ribbon") #We change the plot with geom_ribbon for errors
+#' 
+#' bestLambda <- ridge$lambda.min # The optimal lambda
+#' ridge.final <- lm.ridge(y ~ ., data = X, lambda = bestLambda)
+RidgePlot <- function(ridgeModelCV, pointSize, alphaPoint, colourPoint, colourLine, errorMode, colourError) {
+  
+  if (missing(ridgeModelCV)) {
+    stop("Need to specify ridgeModelCV!")
+  }
+  if (class(ridgeModelCV) != "cv.glmnet") {
+    stop("ridgeModelCV must be a cv.glmnet class!")
+  }
+  
+  if (missing(pointSize)) {
+    pointSize <- 1.5
+  }
+  if (class(pointSize) != "numeric") {
+    stop("pointSize must be a numeric class!")
+  }
+  if (missing(alphaPoint)) {
+    alphaPoint <- 0.8
+  }
+  if (class(alphaPoint) != "numeric") {
+    stop("alphaPoint must be a numeric class!")
+  }
+  if (missing(colourPoint)) {
+    colourPoint <- "darkred"
+  }
+  if (class(colourPoint) != "character") {
+    stop("colourPoint must be a character class!")
+  }
+  if (missing(colourLine)) {
+    colourLine <- "dodgerblue4"
+  }
+  if (class(colourLine) != "character") {
+    stop("colourLine must be a character class!")
+  }
+  if (missing(errorMode)) {
+    errorMode <- "errorbar"
+  }
+  if (class(errorMode) != "character") {
+    stop("errorMode must be a character class!")
+  } else {
+    if (errorMode != "errorbar" || errorMode != "ribbon") {
+      stop("errorMode must be a errorbar or ribbon!")
+    }
+  }
+  if (missing(colourError)) {
+    colourError <- "#A9A9A9"
+  }
+  if (class(colourError) != "character") {
+    stop("colourError must be a character class!")
+  }
+  
+  tidied_cv <- tidy(ridgeModelCV)
+  glance_cv <- glance(ridgeModelCV)
+  
+  tidied_cv <- data.frame(tidied_cv, log(tidied_cv$lambda))
+  names(tidied_cv) <- c(names(tidied_cv)[1:6], "logLambda")
+  
+  if (errorMode  == "errorbar") {
+    p <- ggplot(tidied_cv, aes(logLambda, estimate)) + 
+      xlab("log(Lambda)") + ylab("MSE") +
+      geom_errorbar(aes(ymin = conf.low, ymax = conf.high), colour = colourError, width = .5) +
+      geom_vline(xintercept = log(glance_cv$lambda.min), lty = 2, colour = colourLine) +
+      geom_vline(xintercept = log(glance_cv$lambda.1se), lty = 2, colour = colourLine) +
+      geom_point(colour = colourPoint, size = pointSize, alpha = alphaPoint)
+  } else {
+    p <- ggplot(tidied_cv, aes(logLambda, estimate)) + 
+      xlab("log(Lambda)") + ylab("MSE") +
+      geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .25, colour = colourError) +
+      geom_vline(xintercept = log(glance_cv$lambda.min), lty = 2, colour = colourLine) +
+      geom_vline(xintercept = log(glance_cv$lambda.1se), lty = 2, colour = colourLine) +
+      geom_point(colour = colourPoint, size = pointSize, alpha = alphaPoint)
+  }
+  
+  return (p)
+}

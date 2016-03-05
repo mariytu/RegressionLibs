@@ -12,7 +12,8 @@ Depends:
   rgl,
   reshape,
   plyr,
-  hydroGOF
+  hydroGOF,
+  broom
 Suggets:
   devtools,
   roxygen2
