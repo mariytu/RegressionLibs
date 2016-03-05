@@ -852,7 +852,7 @@ RidgePlot <- function(ridgeModelCV, pointSize, alphaPoint, colourPoint, colourLi
   if (class(errorMode) != "character") {
     stop("errorMode must be a character class!")
   } else {
-    if (errorMode != "errorbar" || errorMode != "ribbon") {
+    if (!(errorMode== "errorbar" || errorMode == "ribbon")) {
       stop("errorMode must be a errorbar or ribbon!")
     }
   }
