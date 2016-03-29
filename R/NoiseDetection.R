@@ -68,7 +68,7 @@ getColumnsNoise <- function(data, limit, inf, sup) {
   }
   if (missing(inf) || missing(sup)) {
     inf <- 1
-    sup <- ncol(dataSet)
+    sup <- ncol(data)
   }
   if (inf > sup) {
     stop("inf must be less than sup!")
