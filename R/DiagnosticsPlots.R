@@ -85,11 +85,14 @@ ResidualsFitted <- function(diagnostic, dependentVariableName, colours) {
   }
   
   #All parameters are OK!
+  min <- min(diagnostic$Dependent.Variable)
+  max <- max(diagnostic$Dependent.Variable)
   p <- ggplot(diagnostic, aes(fitted, resid)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName,
-                          colours = colours) + #set the pallete
+                          colours = colours, breaks = c(min, max),
+                          labels = c(min, max)) + #set the pallete
     geom_smooth(method = "auto", size = 0.7, se = F, colour = "#299E98") +
     xlab("Fitted Values") +
     ylab("Residuals") +
@@ -186,10 +189,13 @@ StResidualsFitted <- function(diagnostic, dependentVariableName, colours) {
   }
   
   #All parameters are OK!
+  min <- min(diagnostic$Dependent.Variable)
+  max <- max(diagnostic$Dependent.Variable)
   p <- ggplot(diagnostic, aes(fitted, sqrt.abs.stz.r)) +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
     scale_color_gradientn(name = dependentVariableName,
-                          colours = colours) + #set the pallete
+                          colours = colours, breaks = c(min, max),
+                          labels = c(min, max)) + #set the pallete
     geom_smooth(method = "auto", size = 0.7, se = F, colour = "#299E98") +
     xlab("Fitted Values") +
     ylab(expression(sqrt("|Standarized Residuals|"))) +
@@ -386,10 +392,14 @@ StResidualsLeverange <- function(diagnostic, dependentVariableName, colours) {
   }
   
   #All parameters are OK!
+  min <- min(diagnostic$Dependent.Variable)
+  max <- max(diagnostic$Dependent.Variable)
   p <- ggplot(diagnostic, aes(leverage, stz.r)) +
     geom_hline(yintercept = 0, colour = "grey50", size = 0.5, linetype="dashed") +
     geom_point(aes(colour = diagnostic$Dependent.Variable), na.rm = TRUE) + 
-    scale_color_gradientn(name = dependentVariableName, colours = colours) + #set the pallete
+    scale_color_gradientn(name = dependentVariableName,
+                          colours = colours, breaks = c(min, max),
+                          labels = c(min, max)) + #set the pallete
     geom_smooth(method = "auto", size = 0.7, se = F, colour = "#299E98") +
     xlab("Leverange") +
     ylab("Standarized Residuals") +

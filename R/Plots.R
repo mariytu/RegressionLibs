@@ -176,6 +176,8 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
   
   # pairs plot
   if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
+    min <- min(dependentVariable)
+    max <- max(dependentVariable)
     p <- ggplot(mega_Data, aes_string(x = "x", y = "y")) + 
       facet_grid(xvar ~ yvar, scales = "free") + 
       geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
@@ -183,7 +185,8 @@ ScatterplotMatrix <- function(data, columns, dependentVariable, dependentVariabl
                    data = gg1$densities, position = "identity", 
                    colour = "dodgerblue4", geom = "line", size = 1, alpha = 0.5) + 
       scale_color_gradientn(name = dependentVariableName,
-                            colours = colours) + #set the pallete
+                            colours = colours, breaks = c(min, max),
+                            labels = c(min, max)) + #set the pallete
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom", #legend at the bottom
             axis.title.x = element_blank(), #remove x label
@@ -345,19 +348,25 @@ ParallelPlot <- function(data, rows, columns, dependentVariable, dependentVariab
   
   if (class(dependentVariable) == "numeric" || class(dependentVariable) == "integer") {
     if (x_lab) {
+      min <- min(dependentVariable)
+      max <- max(dependentVariable)
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_gradientn(name = dependentVariableName,
-                              colours = colours) + #set the pallete
+                              colours = colours, breaks = c(min, max),
+                              labels = c(min, max)) + #set the pallete
         xlab(x_name) + ylab("Values") +
         theme(legend.position = "bottom" #legend at the bottom
         )#end theme
     }
     else {
+      min <- min(dependentVariable)
+      max <- max(dependentVariable)
       p <- ggplot(dataPlot, aes(variable, value, group = x, colour = dependentVariable)) +
         geom_line(size = lineSize, alpha = alphaLine) +
         scale_color_gradientn(name = dependentVariableName,
-                              colours = colours) + #set the pallete
+                              colours = colours, breaks = c(min, max),
+                              labels = c(min, max)) + #set the pallete
         scale_x_discrete(breaks = c()) +
         xlab(x_name) + ylab("Values") +
         theme(legend.position = "bottom" #legend at the bottom
@@ -722,10 +731,13 @@ simplePlot <- function(data, DependentVariable, x_axis, y_axis, dependentVariabl
   names(subData) <- c(x_axis, y_axis, "DependentVariable")
   
   if (class(DependentVariable) == "numeric" || class(DependentVariable) == "integer") {
+    min <- min(DependentVariable)
+    max <- max(DependentVariable)
     p <- ggplot(subData, aes_string(x = x_axis, y = y_axis)) + 
       geom_point(aes(colour = DependentVariable), na.rm = TRUE, alpha = alphaPoint, size = pointSize) + 
       scale_color_gradientn(name = dependentVariableName,
-                            colours = colours) + #set the pallete
+                            colours = colours, breaks = c(min, max),
+                            labels = c(min, max)) + #set the pallete
       theme(panel.grid.minor = element_blank(), #remove gridlines
             legend.position = "bottom" #legend at the bottom
       ) + #end theme
